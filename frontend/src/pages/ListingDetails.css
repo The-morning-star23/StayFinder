@@ -1,0 +1,51 @@
+.details-container {
+  @apply max-w-4xl mx-auto p-6;
+}
+
+.details-title {
+  @apply text-3xl font-bold mb-2;
+}
+
+.details-location {
+  @apply text-gray-600 mb-4;
+}
+
+.details-images {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6;
+}
+
+.details-img {
+  @apply w-full h-60 object-cover rounded-lg;
+}
+
+.details-description {
+  @apply text-lg mb-4;
+}
+
+.details-price {
+  @apply text-xl font-semibold text-indigo-600;
+}
+
+.details-loading {
+  @apply text-center text-lg p-6;
+}
+
+.booking-form {
+  @apply mt-8 p-6 bg-gray-100 rounded-lg flex flex-col gap-4;
+}
+
+.booking-title {
+  @apply text-xl font-semibold;
+}
+
+.booking-form input {
+  @apply p-3 border rounded-md;
+}
+
+.booking-form button {
+  @apply bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700;
+}
+
+.booking-message {
+  @apply text-sm mt-2 text-green-600;
+}

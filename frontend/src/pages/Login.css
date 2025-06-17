@@ -1,0 +1,23 @@
+.auth-container {
+  @apply max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow;
+}
+
+.auth-title {
+  @apply text-2xl font-bold mb-4 text-center;
+}
+
+.auth-form {
+  @apply flex flex-col gap-4;
+}
+
+.auth-form input {
+  @apply p-3 border rounded-md;
+}
+
+.auth-form button {
+  @apply bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700;
+}
+
+.auth-message {
+  @apply text-center mt-2 text-sm text-red-500;
+}
