@@ -1,7 +1,7 @@
 const express = require("express");
 const { getAllListings, getListingById } = require("../controllers/listingController");
 const { createListing, updateListing, deleteListing } = require("../controllers/listingController");
-const authMiddleware = require("../middleware/auth");
+const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get("/", getAllListings);
