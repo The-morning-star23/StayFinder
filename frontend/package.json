@@ -15,7 +15,7 @@
     "mapbox-gl": "^3.12.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-map-gl": "^8.0.4",
+    "react-map-gl": "^7.0.18",
     "react-router-dom": "^7.6.2"
   },
   "devDependencies": {
