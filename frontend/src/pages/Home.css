@@ -2,7 +2,7 @@
   @apply p-8;
 }
 
-..filter-form {
+.filter-form {
   @apply flex gap-4 p-4 bg-white rounded-lg shadow-md mb-6;
 }
 .filter-form input {
