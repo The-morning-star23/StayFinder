@@ -1,9 +1,9 @@
 .auth-container {
-  @apply max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow;
+  @apply max-w-md mx-auto mt-20 bg-white p-8 rounded-lg shadow-md;
 }
 
 .auth-title {
-  @apply text-2xl font-bold mb-4 text-center;
+  @apply text-2xl font-bold text-center mb-6;
 }
 
 .auth-form {
@@ -11,13 +11,13 @@
 }
 
 .auth-form input {
-  @apply p-3 border rounded-md;
+  @apply px-4 py-2 rounded-md border border-gray-300;
 }
 
 .auth-form button {
-  @apply bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700;
+  @apply bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition;
 }
 
 .auth-message {
-  @apply text-center mt-2 text-sm text-red-500;
+  @apply mt-3 text-center text-sm text-green-600;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../axios";
 import "./ListingDetails.css";
 import Map from "../components/Map";
 
@@ -12,7 +12,7 @@ function ListingDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/listings/${id}`)
+      .get(`/api/listings/${id}`)
       .then((res) => setListing(res.data))
       .catch((err) => console.error(err));
   }, [id]);
@@ -25,7 +25,7 @@ function ListingDetails() {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/bookings",
+        "/api/bookings",
         {
           listingId: listing._id,
           ...bookingData,
@@ -74,7 +74,7 @@ function ListingDetails() {
         <button
           type="button"
           onClick={handleMockPayment}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg mt-4"
+          className="pay-btn"
         >
           Pay & Book Now
         </button>
@@ -83,7 +83,7 @@ function ListingDetails() {
 
       {listing.coordinates && (
         <Map longitude={listing.coordinates[0]} latitude={listing.coordinates[1]} />
-        )}
+      )}
     </div>
   );
 }

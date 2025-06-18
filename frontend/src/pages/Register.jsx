@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../axios";
 import "./Register.css";
 
 function Register() {
@@ -13,7 +13,7 @@ function Register() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", formData);
+      await axios.post("/api/auth/register", formData);
       setMessage("Registration successful! You can now log in.");
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
@@ -25,9 +25,30 @@ function Register() {
     <div className="auth-container">
       <h2 className="auth-title">Register</h2>
       <form onSubmit={handleSubmit} className="auth-form">
-        <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
         <button type="submit">Register</button>
         {message && <p className="auth-message">{message}</p>}
       </form>

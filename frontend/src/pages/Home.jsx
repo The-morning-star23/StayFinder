@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../axios";
 import "./Home.css";
 
 function Home() {
@@ -12,13 +12,17 @@ function Home() {
     if (filters.minPrice) params.append("minPrice", filters.minPrice);
     if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
 
-    const res = await axios.get(`http://localhost:5000/api/listings?${params.toString()}`);
-    setListings(res.data);
+    try {
+      const res = await axiosInstance.get(`/api/listings?${params.toString()}`);
+      setListings(res.data);
+    } catch (error) {
+      console.error("Error fetching listings:", error.message);
+    }
   };
 
   useEffect(() => {
     fetchListings();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = (e) => {
