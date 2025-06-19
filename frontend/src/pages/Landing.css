@@ -99,23 +99,3 @@
 .join-overlay {
   @apply bg-black/70 text-white p-8 text-center rounded-xl max-w-2xl mx-auto;
 }
-
-.footer {
-  @apply bg-gray-900 text-white py-10 mt-16;
-}
-
-.footer-grid {
-  @apply grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto px-4 text-sm;
-}
-
-.footer-grid h4 {
-  @apply text-lg font-semibold mb-2;
-}
-
-.footer-grid ul li {
-  @apply mb-1 cursor-pointer hover:underline;
-}
-
-.footer-copy {
-  @apply text-center mt-8 text-gray-400 text-xs;
-}

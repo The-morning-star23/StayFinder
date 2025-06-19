@@ -1,0 +1,15 @@
+.footer {
+  @apply bg-gray-100 text-gray-600 mt-12;
+}
+
+.footer-container {
+  @apply max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center;
+}
+
+.footer-links {
+  @apply flex gap-4 mt-4 md:mt-0;
+}
+
+.footer-links a {
+  @apply hover:text-green-600 transition-colors;
+}

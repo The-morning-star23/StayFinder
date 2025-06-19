@@ -5,15 +5,15 @@ import "./Header.css";
 function Header() {
   return (
     <header className="header">
-      <div className="header-left">
-        <Link to="/" className="logo">
-          StayFinder
-        </Link>
+      <div className="header-container">
+        <Link to="/" className="logo">StayFinder</Link>
+        <nav className="nav">
+          <Link to="/">Home</Link>
+          <Link to="/home">Browse Stays</Link>
+          <Link to="/contact">Contact Us</Link>
+          <Link to="/login" className="login-btn">Login</Link>
+        </nav>
       </div>
-      <nav className="header-nav">
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/contact" className="nav-link">Contact Us</Link>
-      </nav>
     </header>
   );
 }
