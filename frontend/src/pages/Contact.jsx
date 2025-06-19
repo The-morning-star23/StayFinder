@@ -1,58 +1,75 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Contact.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function Contact() {
   return (
-    <div className="contact-page">
-      {/* Hero Section */}
-      <section className="contact-hero">
-        <div className="contact-hero-overlay">
-          <h1 className="contact-title">Need Help? We're Here for You.</h1>
-          <p className="contact-subtitle">Have questions or need assistance? Reach out anytime.</p>
-          <div className="contact-buttons">
-            <Link to="/register" className="btn-primary">Register</Link>
-            <Link to="/login" className="btn-secondary">Login</Link>
+    <>
+      <Header />
+      <div className="contact-page">
+        {/* Hero Section */}
+        <section className="contact-hero">
+          <div className="contact-overlay">
+            <h1 className="contact-title">Need Help? We're Here for You.</h1>
+            <p className="contact-subtitle">
+              Our team is ready to assist you with any questions or concerns you may have.
+            </p>
+            <div className="contact-buttons">
+              <Link to="/register" className="btn-primary">Register</Link>
+              <Link to="/login" className="btn-secondary">Login</Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact Info */}
-      <section className="contact-info">
-        <h2>Contact Information</h2>
-        <p>Email: support@stayfinder.com</p>
-        <p>Phone: +91 98765 43210</p>
-        <p>Address: 221B StayFinder Street, Bangalore, India</p>
-      </section>
+        {/* FAQ Section */}
+        <section className="faq">
+          <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="faq-list">
+            <div className="faq-item">
+              <h4>How do I become a host on StayFinder?</h4>
+              <p>Simply register, complete your profile, and list your property under the hosting dashboard.</p>
+            </div>
+            <div className="faq-item">
+              <h4>What if I face an issue with my booking?</h4>
+              <p>You can raise a support ticket or reach out to our 24/7 help desk for quick assistance.</p>
+            </div>
+            <div className="faq-item">
+              <h4>Is my payment information secure?</h4>
+              <p>Absolutely. We use encrypted payment gateways to ensure your data is safe.</p>
+            </div>
+          </div>
+        </section>
 
-      {/* FAQs */}
-      <section className="faqs">
-        <h2>Frequently Asked Questions</h2>
-        <div className="faq-item">
-          <h3>How do I register as a host?</h3>
-          <p>You can register by clicking the 'Register' button and selecting the Host option.</p>
-        </div>
-        <div className="faq-item">
-          <h3>What payment methods are supported?</h3>
-          <p>We support UPI, Credit/Debit Cards, and Netbanking.</p>
-        </div>
-        <div className="faq-item">
-          <h3>How do I contact support?</h3>
-          <p>You can email us or submit a support ticket below.</p>
-        </div>
-      </section>
+        {/* Support Ticket */}
+        <section className="support">
+          <h2 className="section-title">Still Have Questions?</h2>
+          <p className="support-text">Raise a ticket and we’ll get back to you within 24 hours.</p>
+          <button className="btn-primary">Create Support Ticket</button>
+        </section>
 
-      {/* Ticket Form */}
-      <section className="ticket-form">
-        <h2>Submit a Support Ticket</h2>
-        <form>
-          <input type="text" name="name" placeholder="Your Name" required />
-          <input type="email" name="email" placeholder="Your Email" required />
-          <textarea name="message" placeholder="Describe your issue" rows="5" required />
-          <button type="submit" className="btn-primary">Submit Ticket</button>
-        </form>
-      </section>
-    </div>
+        {/* Contact Info */}
+        <section className="contact-info">
+          <h2 className="section-title">Contact Information</h2>
+          <div className="info-grid">
+            <div className="info-box">
+              <h4>Email</h4>
+              <p>support@stayfinder.com</p>
+            </div>
+            <div className="info-box">
+              <h4>Phone</h4>
+              <p>+91 9876543210</p>
+            </div>
+            <div className="info-box">
+              <h4>Address</h4>
+              <p>StayFinder HQ, Bengaluru, India</p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <Footer />
+    </>
   );
 }
 

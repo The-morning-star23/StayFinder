@@ -1,18 +1,18 @@
 .contact-page {
-  @apply max-w-5xl mx-auto px-4 py-8;
+  @apply bg-white text-gray-800;
 }
 
 .contact-hero {
-  @apply bg-cover bg-center h-[60vh] flex items-center justify-center relative;
-  background-image: url("/images/contact-hero.jpg");
+  @apply bg-cover bg-center text-white py-20 px-6;
+  background-image: url('/images/contact-hero.jpg');
 }
 
-.contact-hero-overlay {
-  @apply bg-black bg-opacity-60 p-10 rounded-lg text-center text-white;
+.contact-overlay {
+  @apply bg-black bg-opacity-50 max-w-4xl mx-auto text-center p-10 rounded-lg;
 }
 
 .contact-title {
-  @apply text-4xl font-bold mb-2;
+  @apply text-4xl font-bold mb-4;
 }
 
 .contact-subtitle {
@@ -23,18 +23,46 @@
   @apply flex justify-center gap-4;
 }
 
-.btn-primary {
-  @apply bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700;
+.faq {
+  @apply py-16 px-6 bg-gray-50 text-center;
 }
 
-.btn-secondary {
-  @apply bg-white text-black px-6 py-2 rounded-lg hover:bg-gray-200;
+.section-title {
+  @apply text-3xl font-semibold mb-8;
+}
+
+.faq-list {
+  @apply max-w-4xl mx-auto grid gap-6 text-left;
+}
+
+.faq-item h4 {
+  @apply text-xl font-medium mb-2;
+}
+
+.faq-item p {
+  @apply text-gray-600;
+}
+
+.support {
+  @apply py-16 px-6 text-center bg-white;
+}
+
+.support-text {
+  @apply text-lg mb-4 text-gray-700;
 }
 
 .contact-info {
-  @apply my-10;
+  @apply py-16 px-6 bg-gray-100;
 }
 
-.contact-info h2 {
-  @apply text
+.info-grid {
+  @apply max-w-4xl mx-auto grid sm:grid-cols-2 md:grid-cols-3 gap-8 text-center;
+}
+
+.info-box h4 {
+  @apply text-xl font-bold mb-2;
+}
+
+.info-box p {
+  @apply text-gray-700;
 }
