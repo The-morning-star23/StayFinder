@@ -1,13 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Contact.css";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 function Contact() {
   return (
-    <>
-      <Header />
       <div className="contact-page">
         {/* Hero Section */}
         <section className="contact-hero">
@@ -68,8 +64,6 @@ function Contact() {
           </div>
         </section>
       </div>
-      <Footer />
-    </>
   );
 }
 
