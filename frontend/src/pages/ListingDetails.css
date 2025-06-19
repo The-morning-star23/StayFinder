@@ -1,51 +1,91 @@
-.details-container {
-  @apply p-6 max-w-5xl mx-auto;
+.landing-wrapper {
+  @apply font-sans text-gray-800;
 }
 
-.details-title {
-  @apply text-3xl font-bold mb-2;
+.hero {
+  @apply bg-gray-100 flex flex-col md:flex-row items-center justify-between px-8 py-12 md:px-20;
 }
 
-.details-location {
-  @apply text-gray-600 mb-4;
+.hero-content {
+  @apply max-w-xl mb-8 md:mb-0;
 }
 
-.details-images {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6;
+.hero-content h1 {
+  @apply text-4xl font-bold mb-4;
 }
 
-.details-img {
-  @apply w-full h-60 object-cover rounded-lg shadow;
+.hero-content p {
+  @apply text-lg mb-6;
 }
 
-.details-description {
-  @apply text-gray-700 mb-4;
+.hero-buttons {
+  @apply flex gap-4;
 }
 
-.details-price {
-  @apply text-xl font-semibold mb-6;
+.btn-primary {
+  @apply bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700;
 }
 
-.booking-form {
-  @apply bg-gray-50 p-6 rounded-lg shadow-md mb-8;
+.btn-secondary {
+  @apply border border-indigo-600 text-indigo-600 px-6 py-2 rounded-lg hover:bg-indigo-100;
 }
 
-.booking-title {
-  @apply text-lg font-medium mb-4;
+.hero-image {
+  @apply w-full max-w-md rounded-lg shadow-md;
 }
 
-.booking-form input {
-  @apply block w-full mb-4 px-4 py-2 rounded-md border border-gray-300;
+.about {
+  @apply bg-white text-center px-8 py-16;
 }
 
-.pay-btn {
-  @apply bg-green-600 text-white px-6 py-2 rounded-lg mt-2 hover:bg-green-700;
+.about h2 {
+  @apply text-3xl font-bold mb-12;
 }
 
-.booking-message {
-  @apply mt-4 text-indigo-600 font-medium;
+.about-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-8;
 }
 
-.details-loading {
-  @apply text-center text-gray-500 py-10 text-xl;
+.about-card {
+  @apply bg-gray-50 p-6 rounded-lg shadow text-center;
+}
+
+.about-card img {
+  @apply w-20 h-20 mx-auto mb-4;
+}
+
+.about-card h3 {
+  @apply text-xl font-semibold mb-2;
+}
+
+.about-card p {
+  @apply text-sm;
+}
+
+.footer {
+  @apply bg-gray-900 text-white px-8 py-12;
+}
+
+.footer-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-8 mb-6;
+}
+
+.footer h3 {
+  @apply text-2xl font-bold mb-2;
+}
+
+.footer h4 {
+  @apply text-lg font-semibold mb-2;
+}
+
+.footer ul li {
+  @apply mb-1;
+}
+
+.footer a {
+  @apply text-gray-300 hover:text-white;
+}
+
+.footer-bottom {
+  @apply text-center text-sm text-gray-400 mt-6;
 }
