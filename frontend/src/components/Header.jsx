@@ -1,19 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <header className="header">
-      <div className="header-container">
-        <Link to="/" className="logo">StayFinder</Link>
-        <nav className="nav">
-          <Link to="/">Home</Link>
-          <Link to="/home">Browse Stays</Link>
-          <Link to="/contact">Contact Us</Link>
-          <Link to="/login" className="login-btn">Login</Link>
-        </nav>
+      <div className="logo" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+        StayFinder
       </div>
+      <nav className="nav-links">
+        <span onClick={handleLogoClick} style={{ cursor: "pointer" }}>Home</span>
+        <Link to="/contact">Contact Us</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+      </nav>
     </header>
   );
 }

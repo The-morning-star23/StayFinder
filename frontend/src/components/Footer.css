@@ -1,5 +1,5 @@
 .footer {
-  @apply bg-gray-100 text-black mt-12;
+  @apply bg-gray-400 text-black mt-12;
 }
 
 .footer-container {
