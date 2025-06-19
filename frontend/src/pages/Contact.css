@@ -1,0 +1,40 @@
+.contact-page {
+  @apply max-w-5xl mx-auto px-4 py-8;
+}
+
+.contact-hero {
+  @apply bg-cover bg-center h-[60vh] flex items-center justify-center relative;
+  background-image: url("/images/contact-hero.jpg");
+}
+
+.contact-hero-overlay {
+  @apply bg-black bg-opacity-60 p-10 rounded-lg text-center text-white;
+}
+
+.contact-title {
+  @apply text-4xl font-bold mb-2;
+}
+
+.contact-subtitle {
+  @apply text-lg mb-6;
+}
+
+.contact-buttons {
+  @apply flex justify-center gap-4;
+}
+
+.btn-primary {
+  @apply bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700;
+}
+
+.btn-secondary {
+  @apply bg-white text-black px-6 py-2 rounded-lg hover:bg-gray-200;
+}
+
+.contact-info {
+  @apply my-10;
+}
+
+.contact-info h2 {
+  @apply text
+}
