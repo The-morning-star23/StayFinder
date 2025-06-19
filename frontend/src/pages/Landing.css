@@ -101,11 +101,11 @@
 }
 
 .join-overlay h2 {
-  @apply text-3xl-white font-bold mb-4;
+  @apply text-3xl text-white font-bold mb-4;
 }
 
 .join-overlay p {
-  @apply text-lg-white mb-8;
+  @apply text-lg text-white mb-8;
 }
 
 .browse-more-btn-wrapper {
