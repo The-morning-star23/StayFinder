@@ -13,7 +13,7 @@ function Home() {
     if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
 
     try {
-      const res = await axiosInstance.get(`/api/listings?${params.toString()}`);
+      const res = await axiosInstance.get(`/listings?${params.toString()}`);
       setListings(res.data);
     } catch (error) {
       console.error("Error fetching listings:", error.message);

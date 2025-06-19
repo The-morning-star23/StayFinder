@@ -12,7 +12,7 @@ function ListingDetails() {
 
   useEffect(() => {
     axios
-      .get(`/api/listings/${id}`)
+      .get(`/listings/${id}`)
       .then((res) => setListing(res.data))
       .catch((err) => console.error(err));
   }, [id]);
@@ -25,7 +25,7 @@ function ListingDetails() {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "/api/bookings",
+        "/bookings",
         {
           listingId: listing._id,
           ...bookingData,
