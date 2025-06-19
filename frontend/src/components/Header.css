@@ -1,23 +1,16 @@
 .header {
-  @apply bg-white shadow-md sticky top-0 z-50;
-}
-
-.header-container {
-  @apply max-w-7xl mx-auto px-6 py-4 flex items-center justify-between;
+  @apply flex justify-between items-center px-8 py-4 bg-white shadow-md sticky top-0 z-50;
 }
 
 .logo {
-  @apply text-2xl font-bold text-green-600 cursor-pointer;
+  @apply text-2xl font-bold text-green-600 hover:text-green-700 transition-colors duration-200;
 }
 
-.nav {
-  @apply flex gap-6 items-center;
+.nav-links {
+  @apply flex gap-6;
 }
 
-.nav a {
-  @apply text-gray-700 hover:text-green-600 font-medium transition-colors;
-}
-
-.login-btn {
-  @apply px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700;
+.nav-links span,
+.nav-links a {
+  @apply text-gray-700 text-lg hover:text-green-600 transition-colors duration-200 cursor-pointer;
 }
