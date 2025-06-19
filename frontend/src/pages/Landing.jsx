@@ -1,13 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Landing.css";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-
 function Landing() {
   return (
-    <>
-      <Header />
       <div>
         {/* Hero Section */}
         <section className="hero">
@@ -32,7 +27,7 @@ function Landing() {
                 StayFinder is a trusted platform for digital nomads, remote workers, and travelers seeking safe, verified, and community-driven accommodations. Whether it’s a weekend getaway or a long-term workcation, we have your next home.
               </p>
             </div>
-            <img src="/images/about.jpg" alt="About StayFinder" className="about-img" />
+            <img src="/images/about.png" alt="About StayFinder" className="about-img" />
           </div>
         </section>
 
@@ -84,6 +79,9 @@ function Landing() {
               </div>
             </div>
           </div>
+          <div className="browse-more-btn-wrapper">
+             <Link to="/home" className="btn-primary">Browse More Stays</Link>
+          </div>
         </section>
 
         {/* Join Community */}
@@ -95,8 +93,6 @@ function Landing() {
           </div>
         </section>
       </div>
-      <Footer />
-    </>
   );
 }
 
