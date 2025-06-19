@@ -1,23 +1,121 @@
-.landing-container {
-  @apply flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-indigo-100 to-white text-center p-6;
+.hero {
+  @apply relative bg-cover bg-center h-[90vh] flex items-center justify-center;
+  background-image: url('/images/hero-stay.jpg');
 }
 
-.landing-title {
-  @apply text-4xl md:text-6xl font-bold mb-4 text-indigo-700;
+.hero-overlay {
+  @apply bg-black/60 p-6 text-white text-center rounded-xl max-w-3xl mx-auto;
 }
 
-.landing-subtitle {
-  @apply text-lg md:text-xl text-gray-600 mb-8;
+.hero-title {
+  @apply text-4xl sm:text-5xl font-bold mb-4;
 }
 
-.landing-buttons {
-  @apply flex gap-4 flex-wrap justify-center;
+.hero-subtitle {
+  @apply text-lg sm:text-xl mb-6;
+}
+
+.hero-buttons {
+  @apply flex gap-4 justify-center flex-wrap;
 }
 
 .btn-primary {
-  @apply bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition;
+  @apply bg-green-600 px-6 py-2 rounded text-white font-medium hover:bg-green-700;
 }
 
-.btn-outline {
-  @apply border border-indigo-600 text-indigo-600 px-6 py-2 rounded-lg hover:bg-indigo-100 transition;
+.btn-secondary {
+  @apply border border-white px-6 py-2 rounded text-white hover:bg-white hover:text-black;
+}
+
+.about {
+  @apply py-16 bg-white;
+}
+
+.about-content {
+  @apply flex flex-col md:flex-row items-center gap-8 max-w-5xl mx-auto px-4;
+}
+
+.about-text {
+  @apply flex-1 text-gray-700;
+}
+
+.about-img {
+  @apply w-full md:w-1/2 rounded-lg shadow-lg;
+}
+
+.features {
+  @apply py-16 bg-gray-100 text-center;
+}
+
+.section-title {
+  @apply text-3xl font-bold mb-10;
+}
+
+.feature-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto;
+}
+
+.feature-card {
+  @apply bg-white p-6 rounded-lg shadow text-center;
+}
+
+.feature-card img {
+  @apply w-12 h-12 mx-auto mb-4;
+}
+
+.feature-card h3 {
+  @apply font-semibold text-lg mb-2;
+}
+
+.feature-card p {
+  @apply text-sm text-gray-600;
+}
+
+.featured {
+  @apply py-16 bg-white;
+}
+
+.stay-cards {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto;
+}
+
+.stay-card {
+  @apply bg-gray-50 rounded-lg overflow-hidden shadow;
+}
+
+.stay-card img {
+  @apply w-full h-48 object-cover;
+}
+
+.stay-card div {
+  @apply p-4;
+}
+
+.join {
+  @apply relative bg-cover bg-center h-[60vh] flex items-center justify-center;
+  background-image: url('/images/join-community.jpg');
+}
+
+.join-overlay {
+  @apply bg-black/70 text-white p-8 text-center rounded-xl max-w-2xl mx-auto;
+}
+
+.footer {
+  @apply bg-gray-900 text-white py-10 mt-16;
+}
+
+.footer-grid {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto px-4 text-sm;
+}
+
+.footer-grid h4 {
+  @apply text-lg font-semibold mb-2;
+}
+
+.footer-grid ul li {
+  @apply mb-1 cursor-pointer hover:underline;
+}
+
+.footer-copy {
+  @apply text-center mt-8 text-gray-400 text-xs;
 }
