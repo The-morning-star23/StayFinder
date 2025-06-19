@@ -1,0 +1,15 @@
+.header {
+  @apply flex justify-between items-center px-6 py-4 shadow bg-white sticky top-0 z-50;
+}
+
+.logo {
+  @apply text-2xl font-bold text-indigo-600 hover:text-indigo-800;
+}
+
+.header-nav {
+  @apply flex gap-6;
+}
+
+.nav-link {
+  @apply text-gray-700 hover:text-indigo-600 text-lg;
+}
