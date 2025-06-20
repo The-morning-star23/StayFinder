@@ -18,3 +18,27 @@
 .active-link {
   @apply text-indigo-600 font-semibold border-b-2 border-indigo-600;
 }
+
+.user-dropdown {
+  @apply relative inline-block text-white cursor-pointer;
+}
+
+.username {
+  @apply font-semibold px-3 py-2;
+}
+
+.dropdown-menu {
+  @apply absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-10;
+}
+
+.dropdown-menu a, .dropdown-menu span {
+  @apply block px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm;
+}
+
+.center-nav {
+  @apply flex-1 flex justify-center items-center;
+}
+
+.browse-button {
+  @apply bg-white text-gray-700 px-6 py-2 rounded-full shadow-md hover:bg-gray-100 transition duration-200;
+}
