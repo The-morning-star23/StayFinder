@@ -35,10 +35,14 @@
   @apply block px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm;
 }
 
-.center-nav {
-  @apply flex-1 flex justify-center items-center;
+.search-bar {
+  @apply flex-1 flex justify-center items-center mx-4;
 }
 
-.browse-button {
-  @apply bg-white text-gray-700 px-6 py-2 rounded-full shadow-md hover:bg-gray-100 transition duration-200;
+.search-bar input {
+  @apply px-4 py-2 rounded-l-full border border-gray-300 w-64 focus:outline-none;
+}
+
+.search-bar button {
+  @apply px-4 py-2 bg-purple-600 text-white rounded-r-full hover:bg-purple-700 transition;
 }
