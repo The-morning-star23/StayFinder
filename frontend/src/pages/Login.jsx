@@ -3,7 +3,7 @@ import axios from "../axios";
 import "./Login.css";
 
 function Login() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ identifier: "", password: "" });
   const [message, setMessage] = useState("");
 
   const handleChange = e => {
@@ -27,10 +27,10 @@ function Login() {
       <h2 className="auth-title">Login</h2>
       <form onSubmit={handleSubmit} className="auth-form">
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
+          type="text"
+          name="identifier"
+          placeholder="Username or Phone"
+          value={formData.identifier}
           onChange={handleChange}
           required
         />
