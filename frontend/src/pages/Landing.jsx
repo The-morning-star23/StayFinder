@@ -58,24 +58,24 @@ function Landing() {
           <h2 className="section-title">Featured Stays</h2>
           <div className="stay-cards">
             <div className="stay-card">
-              <img src="/images/stay1.jpg" alt="Cozy Hilltop Studio" />
+              <img src="/images/isting/stay1.jpg" alt="Cozy Hilltop Cabin" />
               <div>
-                <h4>Cozy Hilltop Studio</h4>
-                <p>Goa · ₹1,500/night</p>
+                <h4>Cozy Hilltyo Cabin</h4>
+                <p>Goa · ₹5000/night</p>
               </div>
             </div>
             <div className="stay-card">
-              <img src="/images/stay2.jpg" alt="Beachside Apartment" />
+              <img src="/images/listings/stay2.jpg" alt="Beach-view House" />
               <div>
-                <h4>Beachside Apartment</h4>
-                <p>Pondicherry · ₹2,200/night</p>
+                <h4>Beach-view House</h4>
+                <p>Goa · ₹7000/night</p>
               </div>
             </div>
             <div className="stay-card">
-              <img src="/images/stay3.jpg" alt="Jungle Treehouse" />
+              <img src="/images/listings/stay3.jpg" alt="Jungle Treehouse" />
               <div>
                 <h4>Jungle Treehouse</h4>
-                <p>Rishikesh · ₹1,800/night</p>
+                <p>Shimla · ₹7000/night</p>
               </div>
             </div>
           </div>
