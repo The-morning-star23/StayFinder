@@ -19,11 +19,12 @@
 }
 
 .listing-card {
-  @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02];
+  @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
 }
 
 .listing-card img {
   @apply w-full h-48 object-cover;
+  background-color: #f3f4f6;
 }
 
 .listing-card h3 {
@@ -33,3 +34,25 @@
 .listing-card p {
   @apply text-gray-600 px-4 pb-4;
 }
+
+/* Optional: Centered loader text */
+.listing-grid > p {
+  @apply col-span-full text-center text-gray-500 text-lg;
+}
+
+.skeleton-card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden animate-pulse;
+}
+
+.skeleton-img {
+  @apply w-full h-48 bg-gray-300;
+}
+
+.skeleton-line {
+  @apply h-4 bg-gray-200 rounded my-2 mx-4;
+}
+
+.skeleton-line.short {
+  @apply w-1/2;
+}
+
