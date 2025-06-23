@@ -6,19 +6,20 @@ import "./Home.css";
 function Home() {
   const [listings, setListings] = useState([]);
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const locationHook = useLocation();
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
 
-  const fetchListings = async () => {
+  const fallbackImage = "/images/placeholder.jpg";
+
+  const fetchListings = async (paramsObj = {}) => {
     const params = new URLSearchParams();
-    if (searchQuery) {
-      params.append("location", searchQuery);
-    } else if (filters.location) {
-      params.append("location", filters.location);
-    }
-    if (filters.minPrice) params.append("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+
+    const locationParam = searchQuery || paramsObj.location || filters.location;
+    if (locationParam) params.append("location", locationParam);
+    if (paramsObj.minPrice || filters.minPrice) params.append("minPrice", paramsObj.minPrice || filters.minPrice);
+    if (paramsObj.maxPrice || filters.maxPrice) params.append("maxPrice", paramsObj.maxPrice || filters.maxPrice);
 
     try {
       setLoading(true);
@@ -42,46 +43,62 @@ function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchListings();
+    fetchListings(filters);
   };
-
-  const fallbackImage = "/images/placeholder.jpg";
 
   return (
     <div className="home-container">
       <form className="filter-form" onSubmit={handleSearch}>
-        <input type="text" name="location" placeholder="Location" value={filters.location} onChange={handleChange} />
-        <input type="number" name="minPrice" placeholder="Min Price" value={filters.minPrice} onChange={handleChange} />
-        <input type="number" name="maxPrice" placeholder="Max Price" value={filters.maxPrice} onChange={handleChange} />
+        <input
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={filters.location}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="minPrice"
+          placeholder="Min Price"
+          value={filters.minPrice}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="maxPrice"
+          placeholder="Max Price"
+          value={filters.maxPrice}
+          onChange={handleChange}
+        />
         <button type="submit">Search</button>
       </form>
 
       <div className="listing-grid">
-        {loading ? (
-          Array(6).fill(0).map((_, i) => (
-            <div className="listing-card skeleton-card" key={i}>
-              <div className="skeleton-img"></div>
-              <div className="skeleton-line short"></div>
-              <div className="skeleton-line"></div>
-              <div className="skeleton-line"></div>
-            </div>
-          ))
-        ) : listings.length > 0 ? (
-          listings.map((listing) => (
-            <div key={listing._id} className="listing-card">
-              <img
-                src={listing.images[0]}
-                alt={listing.title}
-                onError={(e) => (e.target.src = fallbackImage)}
-              />
-              <h3>{listing.title}</h3>
-              <p>{listing.location}</p>
-              <p>₹{listing.price} / night</p>
-            </div>
-          ))
-        ) : (
-          <p>No listings found.</p>
-        )}
+        {loading
+          ? Array(6).fill(0).map((_, i) => (
+              <div className="listing-card skeleton-card" key={i}>
+                <div className="skeleton-img" />
+                <div className="skeleton-line short" />
+                <div className="skeleton-line" />
+                <div className="skeleton-line" />
+              </div>
+            ))
+          : listings.length > 0
+          ? listings.map((listing) => (
+              <div key={listing._id} className="listing-card">
+                <img
+                  src={listing.images?.[0] || fallbackImage}
+                  alt={listing.title}
+                  onError={(e) => {
+                    if (e.target.src !== fallbackImage) e.target.src = fallbackImage;
+                  }}
+                />
+                <h3>{listing.title}</h3>
+                <p>{listing.location}</p>
+                <p>₹{listing.price} / night</p>
+              </div>
+            ))
+          : <p>No listings found.</p>}
       </div>
     </div>
   );
