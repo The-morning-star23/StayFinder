@@ -17,19 +17,18 @@
 
 .listing-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
-  min-height: calc(100vh - 250px); /* ensure full grid height */
-}
-
-
-/* Listing Card */
-.listing-card {
-  @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
   min-height: 400px;
   scroll-behavior: auto; /* Ensure normal loading */
 }
 
 img {
   loading: auto !important;
+}
+
+/* Listing Card */
+.listing-card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
+  min-height: 300px;
 }
 
 .listing-card img {
