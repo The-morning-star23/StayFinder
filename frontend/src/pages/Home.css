@@ -24,7 +24,12 @@
 /* Listing Card */
 .listing-card {
   @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
-  min-height: 300px;
+  min-height: 400px;
+  scroll-behavior: auto; /* Ensure normal loading */
+}
+
+img {
+  loading: auto !important;
 }
 
 .listing-card img {
