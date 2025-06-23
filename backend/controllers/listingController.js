@@ -3,7 +3,7 @@ const Listing = require("../models/Listing");
 // GET /api/listings?location=City&minPrice=1000&maxPrice=5000&startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
 exports.getAllListings = async (req, res) => {
   try {
-    const { location, minPrice, maxPrice, startDate, endDate } = req.query;
+    const { location, minPrice, maxPrice, limit = 12, skip = 0 } = req.query;
 
     let filter = {};
 
@@ -17,11 +17,15 @@ exports.getAllListings = async (req, res) => {
       if (maxPrice) filter.price.$lte = parseInt(maxPrice);
     }
 
-    // Optionally filter by availability if bookings are implemented
-    // (You can later add logic to exclude listings already booked in this date range)
+    const listings = await Listing.find(filter)
+      .sort({ createdAt: -1 }) // newest first
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .populate("host", "name email");
 
-    const listings = await Listing.find(filter).populate("host", "name email");
-    res.json(listings);
+    const total = await Listing.countDocuments(filter); // for frontend to know total available
+
+    res.json({ listings, total });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
