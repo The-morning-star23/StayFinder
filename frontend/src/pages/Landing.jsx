@@ -12,7 +12,7 @@ function Landing() {
               StayFinder connects travelers with affordable, comfortable, and verified homes worldwide.
             </p>
             <div className="hero-buttons">
-              <Link to="/home" className="btn-primary">Browse Listings</Link>
+              <Link to="/homes" className="btn-primary">Browse Listings</Link>
               <Link to="/register" className="btn-secondary">Join the Community</Link>
             </div>
           </div>
@@ -80,7 +80,7 @@ function Landing() {
             </div>
           </div>
           <div className="browse-more-btn-wrapper">
-             <Link to="/home" className="btn-primary">Browse More Stays</Link>
+             <Link to="/homes" className="btn-primary">Browse More Stays</Link>
           </div>
         </section>
 
