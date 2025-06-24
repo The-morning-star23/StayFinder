@@ -102,8 +102,12 @@ function Home() {
               <img
                 src={listing.images[0]}
                 alt={listing.title}
+                loading="eager"
+                fetchpriority="high"
                 onError={(e) => (e.target.src = fallbackImage)}
+                style={{ width: "100%", height: "192px", objectFit: "cover", backgroundColor: "#e2e8f0" }}
               />
+
               <h3>{listing.title}</h3>
               <p>{listing.location}</p>
               <p>₹{listing.price} / night</p>
