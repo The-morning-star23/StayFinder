@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
-import "./Home.css";
+import "./Homes.css";
 
 function Homes() {
   const [listings, setListings] = useState([]);
