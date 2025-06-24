@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
 import "./Home.css";
@@ -14,6 +14,22 @@ function Home() {
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
   const fallbackImage = "/images/placeholder.jpg";
   const LIMIT = 12;
+
+  const observer = useRef();
+  const lastListingRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          fetchListings();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [loading, hasMore]
+  );
 
   const fetchListings = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -45,7 +61,6 @@ function Home() {
   }, [filters, searchQuery, skip, hasMore, loading]);
 
   useEffect(() => {
-    // Reset on new search
     setListings([]);
     setSkip(0);
     setHasMore(true);
@@ -55,31 +70,9 @@ function Home() {
     fetchListings();
   }, [fetchListings]);
 
- useEffect(() => {
-  let timeoutId = null;
-
-  const handleScroll = () => {
-    if (timeoutId) return;
-
-    timeoutId = setTimeout(() => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 300 >=
-        document.documentElement.offsetHeight
-      ) {
-        fetchListings();
-      }
-      timeoutId = null;
-    }, 200); // throttle scroll calls every 200ms
+  const handleChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
   };
-
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, [fetchListings]);
-
-const handleChange = (e) => {
-  setFilters({ ...filters, [e.target.name]: e.target.value });
-};
-
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -100,8 +93,12 @@ const handleChange = (e) => {
 
       <div className="listing-grid">
         {listings.length > 0 ? (
-          listings.map((listing) => (
-            <div key={listing._id} className="listing-card">
+          listings.map((listing, i) => (
+            <div
+              key={listing._id}
+              className="listing-card"
+              ref={i === listings.length - 1 ? lastListingRef : null}
+            >
               <img
                 src={listing.images[0]}
                 alt={listing.title}
