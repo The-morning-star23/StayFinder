@@ -3,7 +3,7 @@ import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
 import "./Home.css";
 
-function Home() {
+function Homes() {
   const [listings, setListings] = useState([]);
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
   const [skip, setSkip] = useState(0);
@@ -133,4 +133,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Homes;

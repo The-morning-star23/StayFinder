@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Homes from "./pages/Homes";
 import ListingDetails from "./pages/ListingDetails";
 import Landing from "./pages/Landing";
 import Register from "./pages/Register";
@@ -20,10 +20,10 @@ function App() {
           }
         />
         <Route
-          path="/home"
+          path="/homes"
           element={
             <Layout>
-              <Home />
+              <Homes />
             </Layout>
           }
         />
