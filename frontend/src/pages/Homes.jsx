@@ -15,28 +15,17 @@ function Homes() {
   const fallbackImage = "/images/placeholder.jpg";
   const LIMIT = 12;
 
+  // eslint-disable-next-line no-unused-vars
   const observer = useRef();
-  const lastListingRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            fetchListings();
-          }
-        },
-        {
-          root: null,
-          rootMargin: "300px",
-          threshold: 0.1,
-        }
-      );
-      if (node) observer.current.observe(node);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loading, hasMore]
-  );
+  const lastListingRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  const debouncedFetch = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      fetchListings();
+    }, 250); // wait 250ms after scroll stops
+  }, [fetchListings]);
 
   const fetchListings = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -76,6 +65,34 @@ function Homes() {
   useEffect(() => {
     fetchListings();
   }, [fetchListings]);
+
+  // Observer: Triggers only when near bottom
+  useEffect(() => {
+    if (loading) return;
+    const observerOptions = {
+      root: null,
+      rootMargin: "300px",
+      threshold: 0.1,
+    };
+
+    const observerInstance = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore) {
+        debouncedFetch();
+      }
+    }, observerOptions);
+
+    if (lastListingRef.current) {
+      observerInstance.observe(lastListingRef.current);
+    }
+
+    return () => {
+      if (lastListingRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        observerInstance.unobserve(lastListingRef.current);
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastListingRef.current, hasMore, loading]);
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
