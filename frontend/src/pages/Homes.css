@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+  overscroll-behavior: none;
+}
 .home-container {
   @apply min-h-screen px-4 py-8 bg-gradient-to-br from-blue-50 via-white to-purple-50;
 }
@@ -21,14 +25,14 @@
   min-height: 600px;
   position: relative;
   overflow: visible;
-  will-change: transform;
   backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Listing Card */
 .listing-card {
   @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
-  min-height: 300px;
+  min-height: 320px;
   transform: translateZ(0);
   contain: content;
 }
@@ -40,6 +44,7 @@
   object-fit: cover;
   background-color: #e2e8f0;
   image-rendering: auto;
+  flex-shrink: 0;
 }
 
 /* Listing Text */

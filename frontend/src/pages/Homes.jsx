@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
 import "./Homes.css";
@@ -14,22 +14,6 @@ function Homes() {
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
   const fallbackImage = "/images/placeholder.jpg";
   const LIMIT = 12;
-
-  const observer = useRef();
-  const lastListingRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          fetchListings();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [loading, hasMore]
-  );
 
   const fetchListings = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -70,6 +54,25 @@ function Homes() {
     fetchListings();
   }, [fetchListings]);
 
+  // Scroll detection fix
+  useEffect(() => {
+    const handleScroll = () => {
+      const nearBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+      if (nearBottom) {
+        fetchListings();
+      }
+    };
+
+    const throttled = () => {
+      clearTimeout(window.scrollTimeout);
+      window.scrollTimeout = setTimeout(handleScroll, 100);
+    };
+
+    window.addEventListener("scroll", throttled);
+    return () => window.removeEventListener("scroll", throttled);
+  }, [fetchListings]);
+
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
@@ -93,12 +96,8 @@ function Homes() {
 
       <div className="listing-grid">
         {listings.length > 0 ? (
-          listings.map((listing, i) => (
-            <div
-              key={listing._id}
-              className="listing-card"
-              ref={i === listings.length - 1 ? lastListingRef : null}
-            >
+          listings.map((listing) => (
+            <div key={listing._id} className="listing-card">
               <img
                 src={listing.images[0]}
                 alt={listing.title}
@@ -107,14 +106,13 @@ function Homes() {
                 onError={(e) => (e.target.src = fallbackImage)}
                 style={{ width: "100%", height: "192px", objectFit: "cover", backgroundColor: "#e2e8f0" }}
               />
-
               <h3>{listing.title}</h3>
               <p>{listing.location}</p>
               <p>₹{listing.price} / night</p>
             </div>
           ))
         ) : (
-          !loading && <p>No listings found.</p>
+          !loading && !hasMore && <p>No listings found.</p>
         )}
 
         {loading &&
