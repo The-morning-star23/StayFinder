@@ -76,18 +76,26 @@ function Home() {
 
   // Intersection Observer to load more when last item appears
   const lastListingRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
+  (node) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && !loading && hasMore) {
           fetchListings();
         }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, fetchListings]
-  );
+      },
+      {
+        root: null,
+        rootMargin: "200px", // Load earlier before scroll hits bottom
+        threshold: 0.1,
+      }
+    );
+    if (node) observer.current.observe(node);
+  },
+  [loading, hasMore, fetchListings]
+);
+
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
