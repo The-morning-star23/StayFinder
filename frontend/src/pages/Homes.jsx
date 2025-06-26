@@ -41,17 +41,38 @@ function Home() {
     }
   }, [filters, searchQuery, skip, hasMore, loading]);
 
-  // Reset listing when search query changes
   useEffect(() => {
-    setListings([]);
-    setSkip(0);
-    setHasMore(true);
-    setLoading(true);
+    const resetAndFetch = async () => {
+      setListings([]);
+      setSkip(0);
+      setHasMore(true);
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append("limit", LIMIT);
+        params.append("skip", 0);
+        if (searchQuery) params.append("location", searchQuery);
+        else if (filters.location) params.append("location", filters.location);
+        if (filters.minPrice) params.append("minPrice", filters.minPrice);
+        if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+        
+        const res = await axiosInstance.get(`/listings?${params.toString()}`);
+        const newListings = res.data.listings;
+
+        setListings(newListings);
+        setSkip(newListings.length);
+        setHasMore(newListings.length === LIMIT);
+      } catch (err) {
+        console.error("Initial fetch error:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    resetAndFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
-  useEffect(() => {
-    fetchListings();
-  }, [fetchListings]);
 
   // Intersection Observer to load more when last item appears
   const lastListingRef = useCallback(
