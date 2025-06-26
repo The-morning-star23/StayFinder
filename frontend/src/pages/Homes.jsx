@@ -8,8 +8,7 @@ function Home() {
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true); // true initially to avoid "No listings found"
   const observer = useRef();
   const LIMIT = 12;
   const locationHook = useLocation();
@@ -32,10 +31,7 @@ function Home() {
       const res = await axiosInstance.get(`/listings?${params.toString()}`);
       const newListings = res.data.listings;
 
-      setListings((prev) => [
-        ...prev,
-        ...newListings.filter((l) => !prev.some((p) => p._id === l._id))
-      ]);
+      setListings((prev) => [...prev, ...newListings.filter((l) => !prev.some((p) => p._id === l._id))]);
       setSkip((prev) => prev + LIMIT);
       if (newListings.length < LIMIT) setHasMore(false);
     } catch (err) {
@@ -45,44 +41,66 @@ function Home() {
     }
   }, [filters, searchQuery, skip, hasMore, loading]);
 
-  // Force more listings if screen isn't full
+  useEffect(() => {
+    const resetAndFetch = async () => {
+      setListings([]);
+      setSkip(0);
+      setHasMore(true);
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append("limit", LIMIT);
+        params.append("skip", 0);
+        if (searchQuery) params.append("location", searchQuery);
+        else if (filters.location) params.append("location", filters.location);
+        if (filters.minPrice) params.append("minPrice", filters.minPrice);
+        if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+        
+        const res = await axiosInstance.get(`/listings?${params.toString()}`);
+        const newListings = res.data.listings;
+
+        setListings(newListings);
+        setSkip(newListings.length);
+        setHasMore(newListings.length === LIMIT);
+      } catch (err) {
+        console.error("Initial fetch error:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    resetAndFetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
+
   useEffect(() => {
     if (listings.length < LIMIT && hasMore && !loading) {
       fetchListings();
     }
   }, [listings, LIMIT, hasMore, loading, fetchListings]);
 
-  // Reset listings when query changes
-  useEffect(() => {
-    setListings([]);
-    setSkip(0);
-    setHasMore(true);
-    setLoading(true);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    fetchListings();
-  }, [fetchListings]);
-
+  // Intersection Observer to load more when last item appears
   const lastListingRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            fetchListings();
-          }
-        },
-        {
-          rootMargin: "200px", // preload early
-          threshold: 0.1,
+  (node) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && !loading && hasMore) {
+          fetchListings();
         }
-      );
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, fetchListings]
-  );
+      },
+      {
+        root: null,
+        rootMargin: "200px", // Load earlier before scroll hits bottom
+        threshold: 0.1,
+      }
+    );
+    if (node) observer.current.observe(node);
+  },
+  [loading, hasMore, fetchListings]
+);
+
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
