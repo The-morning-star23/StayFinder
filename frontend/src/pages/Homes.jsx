@@ -1,157 +1,118 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
 import "./Homes.css";
 
-function Home() {
+export default function Home() {
   const [listings, setListings] = useState([]);
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const observer = useRef(null);
+  const isFetching = useRef(false);
   const LIMIT = 12;
+
   const locationHook = useLocation();
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
   const fallbackImage = "/images/placeholder.jpg";
 
   const fetchListings = useCallback(async () => {
-    if (!hasMore || loading) return;
-
+    if (loading || !hasMore || isFetching.current) return;
+    isFetching.current = true;
     setLoading(true);
+
+    const params = new URLSearchParams({ limit: LIMIT, skip });
+    if (searchQuery) params.append("location", searchQuery);
+    else if (filters.location) params.append("location", filters.location);
+    if (filters.minPrice) params.append("minPrice", filters.minPrice);
+    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+
     try {
-      const params = new URLSearchParams();
-      params.append("limit", LIMIT);
-      params.append("skip", skip);
-      if (searchQuery) params.append("location", searchQuery);
-      else if (filters.location) params.append("location", filters.location);
-      if (filters.minPrice) params.append("minPrice", filters.minPrice);
-      if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-
       const res = await axiosInstance.get(`/listings?${params.toString()}`);
-      const newListings = res.data.listings;
+      const newList = res.data.listings;
 
-      setListings((prev) => [
-        ...prev,
-        ...newListings.filter((l) => !prev.some((p) => p._id === l._id)),
-      ]);
-      setSkip((prev) => prev + LIMIT);
-      if (newListings.length < LIMIT) setHasMore(false);
+      setListings(prev => [...prev, ...newList]);
+      setSkip(prev => prev + newList.length);
+      if (newList.length < LIMIT) setHasMore(false);
     } catch (err) {
-      console.error("Error fetching listings:", err.message);
+      console.error(err);
     } finally {
+      isFetching.current = false;
       setLoading(false);
     }
   }, [filters, searchQuery, skip, hasMore, loading]);
 
-  // Initial Load / Search
   useEffect(() => {
-    const resetAndFetch = async () => {
-      setLoading(true);
-      setHasMore(true);
-      setSkip(0);
-      try {
-        const params = new URLSearchParams();
-        params.append("limit", LIMIT);
-        params.append("skip", 0);
-        if (searchQuery) params.append("location", searchQuery);
-        else if (filters.location) params.append("location", filters.location);
-        if (filters.minPrice) params.append("minPrice", filters.minPrice);
-        if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+    setListings([]); setSkip(0); setHasMore(true);
+    fetchListings();
+  }, [searchQuery, fetchListings]);
 
-        const res = await axiosInstance.get(`/listings?${params.toString()}`);
-        const newListings = res.data.listings;
-        setListings(newListings);
-        setSkip(newListings.length);
-        setHasMore(newListings.length === LIMIT);
-      } catch (err) {
-        console.error("Initial fetch error:", err.message);
-      } finally {
-        setLoading(false);
-      }
+  useEffect(() => {
+    let throttleId = null;
+
+    const onScroll = () => {
+      if (loading || throttleId != null) return;
+      throttleId = setTimeout(() => {
+        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+        if (scrollTop + clientHeight + 200 >= scrollHeight && hasMore) {
+          fetchListings();
+        }
+        throttleId = null;
+      }, 200);
     };
 
-    resetAndFetch();
-  }, [filters.location, filters.maxPrice, filters.minPrice, searchQuery]);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [fetchListings, loading, hasMore]);
 
-  const lastListingRef = useCallback(
-    (node) => {
-      if (loading || !hasMore) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            fetchListings();
-          }
-        },
-        {
-          rootMargin: "300px",
-          threshold: 0.1,
-        }
-      );
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, fetchListings]
-  );
-
-  const handleChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
-
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
-    setListings([]);
-    setSkip(0);
-    setHasMore(true);
+    setListings([]); setSkip(0); setHasMore(true);
     fetchListings();
   };
 
   return (
     <div className="home-container">
       <form className="filter-form" onSubmit={handleSearch}>
-        <input type="text" name="location" placeholder="Location" value={filters.location} onChange={handleChange} />
-        <input type="number" name="minPrice" placeholder="Min Price" value={filters.minPrice} onChange={handleChange} />
-        <input type="number" name="maxPrice" placeholder="Max Price" value={filters.maxPrice} onChange={handleChange} />
+        {["location", "minPrice", "maxPrice"].map(name => (
+          <input
+            key={name}
+            type={name.includes("Price") ? "number" : "text"}
+            name={name}
+            placeholder={name.replace(/([A-Z])/g, " $1").trim()}
+            value={filters[name]}
+            onChange={e => setFilters(f => ({ ...f, [name]: e.target.value }))}
+          />
+        ))}
         <button type="submit">Search</button>
       </form>
 
       <div className="listing-grid">
-        {listings.map((listing, i) => (
-          <div
-            key={listing._id}
-            className="listing-card"
-            ref={i === listings.length - 1 ? lastListingRef : null}
-          >
+        {listings.map(l => (
+          <div key={l._id} className="listing-card">
             <img
-              src={listing.images[0]}
-              alt={listing.title}
+              src={l.images[0]}
+              alt={l.title}
               loading="lazy"
-              onError={(e) => (e.target.src = fallbackImage)}
+              onError={e => (e.target.src = fallbackImage)}
             />
-            <h3>{listing.title}</h3>
-            <p>{listing.location}</p>
-            <p>₹{listing.price} / night</p>
+            <h3>{l.title}</h3>
+            <p>{l.location}</p>
+            <p>₹{l.price} / night</p>
           </div>
         ))}
 
-        {loading &&
-          Array(6)
-            .fill(0)
-            .map((_, i) => (
-              <div className="listing-card skeleton-card" key={i}>
-                <div className="skeleton-img"></div>
-                <div className="skeleton-line short"></div>
-                <div className="skeleton-line"></div>
-                <div className="skeleton-line"></div>
-              </div>
-            ))}
+        {loading && Array(6).fill().map((_, i) => (
+          <div className="listing-card skeleton-card" key={i}>
+            <div className="skeleton-img"></div>
+            <div className="skeleton-line short" />
+            <div className="skeleton-line" />
+            <div className="skeleton-line" />
+          </div>
+        ))}
 
-        {!loading && listings.length === 0 && (
-          <p>No listings found.</p>
-        )}
+        {!loading && listings.length === 0 && <p>No listings found.</p>}
       </div>
     </div>
   );
 }
-
-export default Home;
