@@ -20,13 +20,17 @@
 .listing-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
   min-height: 600px;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* Listing Card */
 .listing-card {
   @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
-  min-height: 300px;
+  min-height: 320px;
   transition: transform 0.3s ease;
+  contain: layout paint;
 }
 
 .listing-card img {

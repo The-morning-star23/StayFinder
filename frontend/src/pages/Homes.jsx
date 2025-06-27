@@ -137,7 +137,7 @@ function Homes() {
             <img
               src={listing.images[0]}
               alt={listing.title}
-              loading="lazy"
+              loading="eager"
               onError={(e) => (e.target.src = fallbackImage)}
             />
             <h3>{listing.title}</h3>
