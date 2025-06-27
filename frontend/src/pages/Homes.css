@@ -1,12 +1,9 @@
-html {
-  scroll-behavior: smooth;
-  overscroll-behavior: none;
-}
+/* Main Container */
 .home-container {
   @apply min-h-screen px-4 py-8 bg-gradient-to-br from-blue-50 via-white to-purple-50;
 }
 
-/* Filter Bar */
+/* Filter Form */
 .filter-form {
   @apply flex flex-col md:flex-row items-center justify-center gap-4 mb-10;
 }
@@ -23,18 +20,13 @@ html {
 .listing-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8;
   min-height: 600px;
-  position: relative;
-  overflow: visible;
-  transform: translate3d(0, 0, 0);
-  contain: layout paint;
 }
 
 /* Listing Card */
 .listing-card {
   @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
-  min-height: 320px;
-  transform: translateZ(0);
-  contain: content;
+  min-height: 300px;
+  transition: transform 0.3s ease;
 }
 
 .listing-card img {
@@ -43,11 +35,9 @@ html {
   height: 192px;
   object-fit: cover;
   background-color: #e2e8f0;
-  image-rendering: auto;
-  flex-shrink: 0;
 }
 
-/* Listing Text */
+/* Text Content */
 .listing-card h3 {
   @apply text-lg font-semibold mt-4 px-4;
 }
@@ -56,11 +46,10 @@ html {
   @apply text-gray-600 px-4 pb-4;
 }
 
-/* Skeleton Placeholder */
+/* Skeleton Loading */
 .skeleton-card {
   @apply bg-white rounded-xl shadow-lg overflow-hidden;
-  animation: pulse 1.2s infinite;
-  border-radius: 8px;
+  animation: pulse 1.2s infinite ease-in-out;
 }
 
 .skeleton-img {
@@ -77,12 +66,6 @@ html {
   @apply w-1/2;
 }
 
-/* Loader text fallback */
-.listing-grid > p {
-  @apply col-span-full text-center text-gray-500 text-lg;
-}
-
-/* Pulse Animation */
 @keyframes pulse {
   0% { opacity: 1; }
   50% { opacity: 0.4; }

@@ -3,31 +3,46 @@ const Listing = require("../models/Listing");
 // GET /api/listings?location=City&minPrice=1000&maxPrice=5000&startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
 exports.getAllListings = async (req, res) => {
   try {
-    const { location, minPrice, maxPrice, limit = 12, skip = 0 } = req.query;
+    const {
+      location = "",
+      minPrice,
+      maxPrice,
+      limit = 12,
+      skip = 0,
+    } = req.query;
 
-    let filter = {};
+    const filters = {};
 
+    // Text search by location
     if (location) {
-      filter.location = { $regex: location, $options: "i" };
+      filters.location = { $regex: location, $options: "i" };
     }
 
+    // Price filter
     if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = parseInt(minPrice);
-      if (maxPrice) filter.price.$lte = parseInt(maxPrice);
+      filters.price = {};
+      if (minPrice) filters.price.$gte = parseInt(minPrice);
+      if (maxPrice) filters.price.$lte = parseInt(maxPrice);
     }
 
-    const listings = await Listing.find(filter)
-      .sort({ createdAt: -1 }) // newest first
-      .skip(parseInt(skip))
-      .limit(parseInt(limit))
-      .populate("host", "name email");
+    // Convert skip and limit
+    const skipVal = parseInt(skip);
+    const limitVal = parseInt(limit);
 
-    const total = await Listing.countDocuments(filter); // for frontend to know total available
+    // Fetch listings and total count
+    const [listings, total] = await Promise.all([
+      Listing.find(filters)
+        .sort({ createdAt: -1 })
+        .skip(skipVal)
+        .limit(limitVal)
+        .populate("host", "name email"),
+      Listing.countDocuments(filters),
+    ]);
 
-    res.json({ listings, total });
+    res.status(200).json({ listings, total });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Listing fetch error:", err.message);
+    res.status(500).json({ message: "Server error while fetching listings" });
   }
 };
 
