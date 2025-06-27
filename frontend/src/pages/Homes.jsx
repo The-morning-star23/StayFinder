@@ -8,8 +8,8 @@ function Home() {
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(true); // true initially to avoid "No listings found"
-  const observer = useRef();
+  const [loading, setLoading] = useState(false);
+  const observer = useRef(null);
   const LIMIT = 12;
   const locationHook = useLocation();
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
@@ -19,19 +19,22 @@ function Home() {
     if (!hasMore || loading) return;
 
     setLoading(true);
-    const params = new URLSearchParams();
-    params.append("limit", LIMIT);
-    params.append("skip", skip);
-    if (searchQuery) params.append("location", searchQuery);
-    else if (filters.location) params.append("location", filters.location);
-    if (filters.minPrice) params.append("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-
     try {
+      const params = new URLSearchParams();
+      params.append("limit", LIMIT);
+      params.append("skip", skip);
+      if (searchQuery) params.append("location", searchQuery);
+      else if (filters.location) params.append("location", filters.location);
+      if (filters.minPrice) params.append("minPrice", filters.minPrice);
+      if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+
       const res = await axiosInstance.get(`/listings?${params.toString()}`);
       const newListings = res.data.listings;
 
-      setListings((prev) => [...prev, ...newListings.filter((l) => !prev.some((p) => p._id === l._id))]);
+      setListings((prev) => [
+        ...prev,
+        ...newListings.filter((l) => !prev.some((p) => p._id === l._id)),
+      ]);
       setSkip((prev) => prev + LIMIT);
       if (newListings.length < LIMIT) setHasMore(false);
     } catch (err) {
@@ -41,12 +44,12 @@ function Home() {
     }
   }, [filters, searchQuery, skip, hasMore, loading]);
 
+  // Initial Load / Search
   useEffect(() => {
     const resetAndFetch = async () => {
-      setListings([]);
-      setSkip(0);
-      setHasMore(true);
       setLoading(true);
+      setHasMore(true);
+      setSkip(0);
       try {
         const params = new URLSearchParams();
         params.append("limit", LIMIT);
@@ -55,10 +58,9 @@ function Home() {
         else if (filters.location) params.append("location", filters.location);
         if (filters.minPrice) params.append("minPrice", filters.minPrice);
         if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-        
+
         const res = await axiosInstance.get(`/listings?${params.toString()}`);
         const newListings = res.data.listings;
-
         setListings(newListings);
         setSkip(newListings.length);
         setHasMore(newListings.length === LIMIT);
@@ -70,37 +72,27 @@ function Home() {
     };
 
     resetAndFetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+  }, [filters.location, filters.maxPrice, filters.minPrice, searchQuery]);
 
-  useEffect(() => {
-    if (listings.length < LIMIT && hasMore && !loading) {
-      fetchListings();
-    }
-  }, [listings, LIMIT, hasMore, loading, fetchListings]);
-
-  // Intersection Observer to load more when last item appears
   const lastListingRef = useCallback(
-  (node) => {
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(
-      (entries) => {
-        const first = entries[0];
-        if (first.isIntersecting && !loading && hasMore) {
-          fetchListings();
+    (node) => {
+      if (loading || !hasMore) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            fetchListings();
+          }
+        },
+        {
+          rootMargin: "300px",
+          threshold: 0.1,
         }
-      },
-      {
-        root: null,
-        rootMargin: "200px", // Load earlier before scroll hits bottom
-        threshold: 0.1,
-      }
-    );
-    if (node) observer.current.observe(node);
-  },
-  [loading, hasMore, fetchListings]
-);
-
+      );
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore, fetchListings]
+  );
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -111,7 +103,6 @@ function Home() {
     setListings([]);
     setSkip(0);
     setHasMore(true);
-    setLoading(true);
     fetchListings();
   };
 
