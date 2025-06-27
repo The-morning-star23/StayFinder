@@ -1,109 +1,38 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback
-} from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
 import "./Homes.css";
 
-const LIMIT = 12;
-const fallbackImage = "/images/placeholder.jpg";
-
 function Homes() {
   const [listings, setListings] = useState([]);
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
-  const [skip, setSkip] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const locationHook = useLocation();
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
-  const observer = useRef();
+  const fallbackImage = "/images/placeholder.jpg";
 
-  const fetchListings = useCallback(async () => {
-    if (loading || !hasMore) return;
-
+  const fetchListings = async () => {
     setLoading(true);
-    const params = new URLSearchParams();
-    params.append("limit", LIMIT);
-    params.append("skip", skip);
-    if (searchQuery) params.append("location", searchQuery);
-    else if (filters.location) params.append("location", filters.location);
-    if (filters.minPrice) params.append("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-
     try {
-      const res = await axiosInstance.get(`/listings?${params.toString()}`);
-      const newListings = res.data.listings;
+      const params = new URLSearchParams();
+      if (searchQuery) params.append("location", searchQuery);
+      else if (filters.location) params.append("location", filters.location);
+      if (filters.minPrice) params.append("minPrice", filters.minPrice);
+      if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
 
-      setListings((prev) => [...prev, ...newListings.filter((l) => !prev.some((p) => p._id === l._id))]);
-      setSkip((prev) => prev + LIMIT);
-      setHasMore(newListings.length === LIMIT);
+      const res = await axiosInstance.get(`/listings?${params.toString()}`);
+      setListings(res.data.listings || []);
     } catch (err) {
       console.error("Error fetching listings:", err.message);
     } finally {
       setLoading(false);
     }
-  }, [filters, searchQuery, skip, hasMore, loading]);
+  };
 
-  // Initial + query change load
   useEffect(() => {
-    const resetAndFetch = async () => {
-      setListings([]);
-      setSkip(0);
-      setHasMore(true);
-      setLoading(true);
-
-      try {
-        const params = new URLSearchParams();
-        params.append("limit", LIMIT);
-        params.append("skip", 0);
-        if (searchQuery) params.append("location", searchQuery);
-        else if (filters.location) params.append("location", filters.location);
-        if (filters.minPrice) params.append("minPrice", filters.minPrice);
-        if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-
-        const res = await axiosInstance.get(`/listings?${params.toString()}`);
-        const newListings = res.data.listings;
-
-        setListings(newListings);
-        setSkip(newListings.length);
-        setHasMore(newListings.length === LIMIT);
-      } catch (err) {
-        console.error("Initial fetch error:", err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    resetAndFetch();
-  }, [searchQuery, filters]);
-
-  // Infinite scroll
-  const lastListingRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            fetchListings();
-          }
-        },
-        {
-          root: null,
-          rootMargin: "200px",
-          threshold: 0.1,
-        }
-      );
-
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore, fetchListings]
-  );
+    fetchListings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -111,10 +40,6 @@ function Homes() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setListings([]);
-    setSkip(0);
-    setHasMore(true);
-    setLoading(true);
     fetchListings();
   };
 
@@ -128,37 +53,33 @@ function Homes() {
       </form>
 
       <div className="listing-grid">
-        {listings.map((listing, i) => (
-          <div
-            key={listing._id}
-            className="listing-card"
-            ref={i === listings.length - 1 ? lastListingRef : null}
-          >
-            <img
-              src={listing.images[0]}
-              alt={listing.title}
-              loading="eager"
-              onError={(e) => (e.target.src = fallbackImage)}
-            />
-            <h3>{listing.title}</h3>
-            <p>{listing.location}</p>
-            <p>₹{listing.price} / night</p>
-          </div>
-        ))}
-
-        {loading &&
-          Array(6)
-            .fill(0)
-            .map((_, i) => (
-              <div className="listing-card skeleton-card" key={i}>
-                <div className="skeleton-img"></div>
-                <div className="skeleton-line short"></div>
-                <div className="skeleton-line"></div>
-                <div className="skeleton-line"></div>
+        {loading
+          ? Array(6)
+              .fill(0)
+              .map((_, i) => (
+                <div className="listing-card skeleton-card" key={i}>
+                  <div className="skeleton-img"></div>
+                  <div className="skeleton-line short"></div>
+                  <div className="skeleton-line"></div>
+                  <div className="skeleton-line"></div>
+                </div>
+              ))
+          : listings.length > 0
+          ? listings.map((listing) => (
+              <div className="listing-card" key={listing._id}>
+                <img
+                  src={listing.images[0]}
+                  alt={listing.title}
+                  loading="eager"
+                  onError={(e) => (e.target.src = fallbackImage)}
+                />
+                <h3>{listing.title}</h3>
+                <p>{listing.location}</p>
+                <p>₹{listing.price} / night</p>
               </div>
-            ))}
-
-        {!loading && listings.length === 0 && <p>No listings found.</p>}
+            ))
+          : <p>No listings found.</p>
+        }
       </div>
     </div>
   );
