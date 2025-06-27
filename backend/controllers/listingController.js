@@ -1,52 +1,35 @@
 const Listing = require("../models/Listing");
 
-// GET /api/listings?location=City&minPrice=1000&maxPrice=5000&startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+// GET /api/listings?location=City&minPrice=1000&maxPrice=5000
 exports.getAllListings = async (req, res) => {
   try {
-    const {
-      location = "",
-      minPrice,
-      maxPrice,
-      limit = 12,
-      skip = 0,
-    } = req.query;
+    const { location, minPrice, maxPrice } = req.query;
 
-    const filters = {};
+    let filter = {};
 
-    // Text search by location
     if (location) {
-      filters.location = { $regex: location, $options: "i" };
+      filter.location = { $regex: location, $options: "i" };
     }
 
-    // Price filter
     if (minPrice || maxPrice) {
-      filters.price = {};
-      if (minPrice) filters.price.$gte = parseInt(minPrice);
-      if (maxPrice) filters.price.$lte = parseInt(maxPrice);
+      filter.price = {};
+      if (minPrice) filter.price.$gte = parseInt(minPrice);
+      if (maxPrice) filter.price.$lte = parseInt(maxPrice);
     }
 
-    // Convert skip and limit
-    const skipVal = parseInt(skip);
-    const limitVal = parseInt(limit);
+    const listings = await Listing.find(filter)
+      .sort({ createdAt: -1 })
+      .populate("host", "name email");
 
-    // Fetch listings and total count
-    const [listings, total] = await Promise.all([
-      Listing.find(filters)
-        .sort({ createdAt: -1 })
-        .skip(skipVal)
-        .limit(limitVal)
-        .populate("host", "name email"),
-      Listing.countDocuments(filters),
-    ]);
+    const total = listings.length;
 
-    res.status(200).json({ listings, total });
+    res.json({ listings, total });
   } catch (err) {
-    console.error("Listing fetch error:", err.message);
-    res.status(500).json({ message: "Server error while fetching listings" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-// GET listing by ID
+// GET /api/listings/:id
 exports.getListingById = async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id).populate("host", "name email");
@@ -57,7 +40,7 @@ exports.getListingById = async (req, res) => {
   }
 };
 
-// POST create listing
+// POST /api/listings (protected)
 exports.createListing = async (req, res) => {
   try {
     const listing = new Listing({ ...req.body, host: req.user.id });
@@ -68,7 +51,7 @@ exports.createListing = async (req, res) => {
   }
 };
 
-// PUT update listing
+// PUT /api/listings/:id (protected)
 exports.updateListing = async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
@@ -82,7 +65,7 @@ exports.updateListing = async (req, res) => {
   }
 };
 
-// DELETE listing
+// DELETE /api/listings/:id (protected)
 exports.deleteListing = async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
