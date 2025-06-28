@@ -1,9 +1,8 @@
 const Listing = require("../models/Listing");
 
-// GET /api/listings?location=City&minPrice=1000&maxPrice=5000
 exports.getAllListings = async (req, res) => {
   try {
-    const { location, minPrice, maxPrice } = req.query;
+    const { location, minPrice, maxPrice, page = 1, limit = 12 } = req.query;
 
     let filter = {};
 
@@ -17,17 +16,19 @@ exports.getAllListings = async (req, res) => {
       if (maxPrice) filter.price.$lte = parseInt(maxPrice);
     }
 
+    const total = await Listing.countDocuments(filter);
     const listings = await Listing.find(filter)
       .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
       .populate("host", "name email");
 
-    const total = listings.length;
-
-    res.json({ listings, total });
+    res.json({ listings, total, currentPage: parseInt(page), totalPages: Math.ceil(total / limit) });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // GET /api/listings/:id
 exports.getListingById = async (req, res) => {

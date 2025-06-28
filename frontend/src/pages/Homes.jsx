@@ -6,22 +6,29 @@ import "./Homes.css";
 function Homes() {
   const [listings, setListings] = useState([]);
   const [filters, setFilters] = useState({ location: "", minPrice: "", maxPrice: "" });
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+
   const locationHook = useLocation();
   const searchQuery = new URLSearchParams(locationHook.search).get("search");
   const fallbackImage = "/images/placeholder.jpg";
+  const LIMIT = 12;
 
   const fetchListings = async () => {
     setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (searchQuery) params.append("location", searchQuery);
-      else if (filters.location) params.append("location", filters.location);
-      if (filters.minPrice) params.append("minPrice", filters.minPrice);
-      if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
+    const params = new URLSearchParams();
+    params.append("limit", LIMIT);
+    params.append("page", page);
+    if (searchQuery) params.append("location", searchQuery);
+    else if (filters.location) params.append("location", filters.location);
+    if (filters.minPrice) params.append("minPrice", filters.minPrice);
+    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
 
+    try {
       const res = await axiosInstance.get(`/listings?${params.toString()}`);
-      setListings(res.data.listings || []);
+      setListings(res.data.listings);
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error("Error fetching listings:", err.message);
     } finally {
@@ -32,7 +39,7 @@ function Homes() {
   useEffect(() => {
     fetchListings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+  }, [page, searchQuery]);
 
   const handleChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
@@ -40,7 +47,37 @@ function Homes() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setPage(1);
     fetchListings();
+  };
+
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const buttons = [];
+    for (let i = 1; i <= totalPages; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => setPage(i)}
+          className={`pagination-btn ${i === page ? "active" : ""}`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return (
+      <div className="pagination">
+        <button onClick={() => setPage((p) => Math.max(p - 1, 1))} disabled={page === 1}>
+          Prev
+        </button>
+        {buttons}
+        <button onClick={() => setPage((p) => Math.min(p + 1, totalPages))} disabled={page === totalPages}>
+          Next
+        </button>
+      </div>
+    );
   };
 
   return (
@@ -54,23 +91,21 @@ function Homes() {
 
       <div className="listing-grid">
         {loading
-          ? Array(6)
-              .fill(0)
-              .map((_, i) => (
-                <div className="listing-card skeleton-card" key={i}>
-                  <div className="skeleton-img"></div>
-                  <div className="skeleton-line short"></div>
-                  <div className="skeleton-line"></div>
-                  <div className="skeleton-line"></div>
-                </div>
-              ))
+          ? Array(6).fill(0).map((_, i) => (
+              <div className="listing-card skeleton-card" key={i}>
+                <div className="skeleton-img"></div>
+                <div className="skeleton-line short"></div>
+                <div className="skeleton-line"></div>
+                <div className="skeleton-line"></div>
+              </div>
+            ))
           : listings.length > 0
           ? listings.map((listing) => (
               <div className="listing-card" key={listing._id}>
                 <img
                   src={listing.images[0]}
                   alt={listing.title}
-                  loading="eager"
+                  loading="lazy"
                   onError={(e) => (e.target.src = fallbackImage)}
                 />
                 <h3>{listing.title}</h3>
@@ -78,9 +113,10 @@ function Homes() {
                 <p>₹{listing.price} / night</p>
               </div>
             ))
-          : <p>No listings found.</p>
-        }
+          : <p>No listings found.</p>}
       </div>
+
+      {renderPagination()}
     </div>
   );
 }

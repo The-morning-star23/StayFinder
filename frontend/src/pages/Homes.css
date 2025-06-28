@@ -25,19 +25,19 @@
   backface-visibility: hidden;
 }
 
-/* Listing Card */
 .listing-card {
-  @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform hover:scale-[1.02] flex flex-col;
+  @apply bg-white rounded-xl shadow-lg overflow-hidden hover:scale-[1.02] flex flex-col transition-transform;
   min-height: 320px;
-  transition: transform 0.3s ease;
   contain: layout paint;
 }
+
 
 .listing-card img {
   display: block;
   width: 100%;
   height: 192px;
   object-fit: cover;
+  object-position: center;
   background-color: #e2e8f0;
 }
 
@@ -74,4 +74,20 @@
   0% { opacity: 1; }
   50% { opacity: 0.4; }
   100% { opacity: 1; }
+}
+
+.pagination {
+  @apply flex justify-center items-center gap-2 mt-10 flex-wrap;
+}
+
+.pagination-btn {
+  @apply px-4 py-2 border border-gray-300 rounded-md hover:bg-purple-100 transition;
+}
+
+.pagination-btn.active {
+  @apply bg-purple-600 text-white border-transparent;
+}
+
+.pagination > button {
+  @apply px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 transition disabled:opacity-50;
 }
