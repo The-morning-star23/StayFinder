@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../axios";
 import { useLocation } from "react-router-dom";
-import "./Home.css";
+import "./Homes.css";
 
 const LIMIT = 9;
 
