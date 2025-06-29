@@ -16,15 +16,15 @@
 }
 
 .hero-buttons {
-  @apply flex gap-4 justify-center flex-wrap;
+  @apply flex gap-4 justify-center mt-4 flex-wrap;
 }
 
 .btn-primary {
-  @apply bg-green-600 px-6 py-2 rounded text-white font-medium hover:bg-green-700;
+  @apply bg-green-600 px-6 py-2 rounded text-white font-medium hover:bg-green-700 text-center;
 }
 
 .btn-secondary {
-  @apply border border-white px-6 py-2 rounded text-white hover:bg-white hover:text-black;
+  @apply border border-white px-6 py-2 rounded text-white hover:bg-white hover:text-black text-center;
 }
 
 .about {
@@ -113,5 +113,5 @@
 }
 
 .browse-more-btn-wrapper .btn-primary {
-  @apply bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition;
+  @apply bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transitioninline-block w-auto;
 }

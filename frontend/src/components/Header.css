@@ -3,7 +3,7 @@
 }
 
 .logo {
-  @apply text-2xl font-bold text-green-600 hover:text-green-700 transition-colors duration-200;
+  @apply text-2xl font-bold text-green-600 hover:text-green-700 transition-colors duration-200 cursor-pointer;
 }
 
 .nav-links {
@@ -40,7 +40,7 @@
 }
 
 .search-bar input {
-  @apply px-4 py-2 rounded-l-full border border-gray-300 w-64 focus:outline-none;
+  @apply px-4 py-2 rounded-l-full border border-gray-300 w-full max-w-xl focus:outline-none;
 }
 
 .search-bar button {

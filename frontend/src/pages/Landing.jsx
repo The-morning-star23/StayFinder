@@ -58,7 +58,7 @@ function Landing() {
           <h2 className="section-title">Featured Stays</h2>
           <div className="stay-cards">
             <div className="stay-card">
-              <img src="/images/isting/stay1.jpg" alt="Cozy Hilltop Cabin" />
+              <img src="/images/listings/stay1.jpg" alt="Cozy Hilltop Cabin" />
               <div>
                 <h4>Cozy Hilltyo Cabin</h4>
                 <p>Goa · ₹5000/night</p>
