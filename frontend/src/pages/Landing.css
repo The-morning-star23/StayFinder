@@ -113,5 +113,5 @@
 }
 
 .browse-more-btn-wrapper .btn-primary {
-  @apply bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transitioninline-block w-auto;
+  @apply bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition inline-block w-auto;
 }
