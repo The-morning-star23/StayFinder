@@ -16,15 +16,23 @@
 }
 
 .hero-buttons {
-  @apply flex justify-center items-center gap-4 mt-6 flex-wrap;
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* adds space between buttons */
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
 }
 
-.hero-buttons .btn-primary {
-  @apply bg-purple-600 px-6 py-2 rounded text-white font-medium hover:bg-purple-700 transition;
+.btn-primary {
+  @apply bg-green-600 px-6 py-2 rounded text-white font-medium hover:bg-green-700;
+  text-align: center;
+  display: inline-block;
 }
 
 .btn-secondary {
-  @apply border border-white px-6 py-2 rounded text-white hover:bg-white hover:text-black transition;
+  @apply border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition;
+  text-align: center;
+  display: inline-block;
 }
 
 .about {
