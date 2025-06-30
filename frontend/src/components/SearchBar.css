@@ -11,13 +11,13 @@
   bottom: 4px;
   border-radius: 9999px;
   background-color: white;
-  box-shadow: 0 0 0 2px #d1d5db; /* outline feel */
+  box-shadow: 0 0 0 2px #d1d5db;
   transition: transform 0.3s ease;
   z-index: 1;
 }
 
 .search-bar-container.four .search-highlight {
-  width: calc((100% - 0px) / 4);
+  width: calc(100% / 4);
 }
 
 .search-section {
@@ -27,33 +27,36 @@
   border-radius: 9999px;
 }
 
-.search-section:hover {
+/* Hover effect only when NOT active */
+.search-section:hover:not(.active) {
   background-color: #f1f1f1;
 }
 
-.search-section.active {
-  z-index: 3;
-  color: black;
+/* Remove divider when active */
+.search-section.active::after {
+  display: none;
 }
 
+/* Inputs remain clean and centered */
 .search-section input {
   @apply bg-transparent outline-none w-full text-sm;
   border: none;
   z-index: 4;
 }
 
+/* Dividers: should not appear over hover background */
 .search-section:not(:last-child)::after {
   content: "";
   position: absolute;
   right: 0;
-  top: 25%;
-  height: 50%;
+  top: 12%;
+  height: 76%;
   width: 1px;
   background-color: #e2e8f0;
-  z-index: 3;
+  z-index: 0;
 }
 
-/* Guests dropdown */
+/* Guests dropdown styling */
 .guest-dropdown {
   @apply absolute top-full mt-2 bg-white rounded-lg shadow p-4;
   z-index: 10;
