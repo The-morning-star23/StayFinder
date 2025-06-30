@@ -1,48 +1,23 @@
 .header {
-  @apply flex justify-between items-center px-8 py-4 bg-white shadow-md sticky top-0 z-50;
+  @apply flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50;
 }
 
+/* Logo */
 .logo {
-  @apply text-2xl font-bold text-green-600 hover:text-green-700 transition-colors duration-200 cursor-pointer;
+  @apply text-2xl font-bold text-green-600 cursor-pointer;
 }
 
+/* Centered SearchBar */
+.search-bar-wrapper {
+  @apply flex-1 flex justify-center;
+}
+
+/* Navigation Links */
 .nav-links {
-  @apply flex gap-6;
+  @apply flex gap-6 text-gray-700 font-medium items-center;
 }
 
-.nav-links span,
-.nav-links a {
-  @apply text-gray-700 text-lg hover:text-green-600 transition-colors duration-200 cursor-pointer;
-}
-
-.active-link {
-  @apply text-indigo-600 font-semibold border-b-2 border-indigo-600;
-}
-
-.user-dropdown {
-  @apply relative inline-block text-white cursor-pointer;
-}
-
-.username {
-  @apply font-semibold px-3 py-2;
-}
-
-.dropdown-menu {
-  @apply absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-10;
-}
-
-.dropdown-menu a, .dropdown-menu span {
-  @apply block px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm;
-}
-
-.search-bar {
-  @apply flex-1 flex justify-center items-center mx-4;
-}
-
-.search-bar input {
-  @apply px-4 py-2 rounded-l-full border border-gray-300 w-full max-w-xl focus:outline-none;
-}
-
-.search-bar button {
-  @apply px-4 py-2 bg-purple-600 text-white rounded-r-full hover:bg-purple-700 transition;
+.nav-links a,
+.nav-links span {
+  @apply hover:text-purple-600 transition cursor-pointer;
 }

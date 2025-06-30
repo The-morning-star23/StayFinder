@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import SearchBar from "./SearchBar";
 
 function Header() {
-  const [search, setSearch] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -16,9 +15,8 @@ function Header() {
     }
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (search.trim()) navigate(`/home?search=${search.trim()}`);
+  const handleSearch = (formData) => {
+    navigate(`/homes?search=${formData.location}`);
   };
 
   return (
@@ -27,15 +25,9 @@ function Header() {
         StayFinder
       </div>
 
-      <form onSubmit={handleSearch} className="search-bar">
-        <input
-          type="text"
-          placeholder="Search stays, locations..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <div className="search-bar-wrapper">
+        <SearchBar onSearch={handleSearch} />
+      </div>
 
       <nav className="nav-links">
         <span onClick={handleLogoClick}>Home</span>
@@ -43,7 +35,6 @@ function Header() {
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
       </nav>
-      <SearchBar onSearch={(form) => console.log("Search data:", form)} />
     </header>
   );
 }
