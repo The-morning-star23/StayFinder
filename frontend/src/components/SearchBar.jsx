@@ -10,61 +10,77 @@ function SearchBar({ onSearch }) {
     children: 0,
   });
 
+  const [guestOpen, setGuestOpen] = useState(false);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleGuestChange = (type, op) => {
+    setForm((prev) => ({
+      ...prev,
+      [type]: op === "inc" ? prev[type] + 1 : Math.max(0, prev[type] - 1),
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSearch) onSearch(form);
+    onSearch(form);
   };
 
   return (
-    <form className="search-bar-advanced" onSubmit={handleSubmit}>
+    <form className="searchbar-container" onSubmit={handleSubmit}>
       <input
         type="text"
         name="location"
-        placeholder="Location or Property Name"
+        placeholder="Where to? (City, Property)"
         value={form.location}
         onChange={handleChange}
       />
+
       <input
         type="date"
         name="checkIn"
+        placeholder="Check-in"
         value={form.checkIn}
         onChange={handleChange}
       />
+
       <input
         type="date"
         name="checkOut"
+        placeholder="Check-out"
         value={form.checkOut}
         onChange={handleChange}
       />
-      <div className="guest-select">
-        <label>
-          Adults
-          <input
-            type="number"
-            name="adults"
-            min="1"
-            max="10"
-            value={form.adults}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Children
-          <input
-            type="number"
-            name="children"
-            min="0"
-            max="10"
-            value={form.children}
-            onChange={handleChange}
-          />
-        </label>
+
+      <div className="guest-selector">
+        <div className="guest-display" onClick={() => setGuestOpen(!guestOpen)}>
+          {form.adults + form.children} Guest{form.adults + form.children !== 1 ? "s" : ""}
+        </div>
+        {guestOpen && (
+          <div className="guest-dropdown">
+            <div className="guest-row">
+              <span>Adults</span>
+              <div className="guest-controls">
+                <button type="button" onClick={() => handleGuestChange("adults", "dec")}>-</button>
+                <span>{form.adults}</span>
+                <button type="button" onClick={() => handleGuestChange("adults", "inc")}>+</button>
+              </div>
+            </div>
+            <div className="guest-row">
+              <span>Children</span>
+              <div className="guest-controls">
+                <button type="button" onClick={() => handleGuestChange("children", "dec")}>-</button>
+                <span>{form.children}</span>
+                <button type="button" onClick={() => handleGuestChange("children", "inc")}>+</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      <button type="submit">Search</button>
+
+      <button type="submit" className="search-btn">Search</button>
     </form>
   );
 }

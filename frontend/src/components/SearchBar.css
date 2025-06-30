@@ -1,26 +1,43 @@
-.search-bar-advanced {
-  @apply flex flex-wrap justify-center items-center gap-4 bg-white p-4 rounded-xl shadow-md;
+.searchbar-container {
+  @apply flex flex-wrap justify-center items-center gap-4 bg-white rounded-full shadow-lg px-6 py-3;
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.search-bar-advanced input[type="text"],
-.search-bar-advanced input[type="date"] {
-  @apply px-4 py-2 border border-gray-300 rounded-md w-48;
+.searchbar-container input[type="text"],
+.searchbar-container input[type="date"] {
+  @apply px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500;
+  min-width: 150px;
 }
 
-.guest-select {
-  @apply flex gap-4 items-center;
+.guest-selector {
+  @apply relative;
 }
 
-.guest-select label {
-  @apply text-sm text-gray-700;
-  display: flex;
-  flex-direction: column;
+.guest-display {
+  @apply px-4 py-2 border border-gray-300 rounded-full cursor-pointer bg-white;
+  min-width: 120px;
+  text-align: center;
 }
 
-.guest-select input {
-  @apply px-2 py-1 border border-gray-300 rounded-md w-20;
+.guest-dropdown {
+  @apply absolute top-14 left-0 bg-white border border-gray-300 shadow-lg rounded-lg p-4 z-50;
+  width: 200px;
 }
 
-.search-bar-advanced button {
-  @apply bg-purple-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-purple-700 transition;
+.guest-row {
+  @apply flex justify-between items-center mb-3;
+}
+
+.guest-controls {
+  @apply flex items-center gap-2;
+}
+
+.guest-controls button {
+  @apply w-6 h-6 bg-gray-300 rounded-full text-black hover:bg-gray-400;
+}
+
+.search-btn {
+  @apply bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition;
 }
