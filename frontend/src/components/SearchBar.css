@@ -5,52 +5,43 @@
   transition: box-shadow 0.3s ease;
 }
 
-/* Highlight slider background */
 .search-highlight {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  background-color: #f3f4f6;
+  top: 4px;
+  bottom: 4px;
   border-radius: 9999px;
+  background-color: white;
+  box-shadow: 0 0 0 2px #d1d5db; /* outline feel */
   transition: transform 0.3s ease;
-  z-index: 0; /* behind everything */
-}
-
-/* Width calculation for highlight */
-.search-bar-container.four .search-highlight {
-  width: calc(100% / 4);
-}
-.search-bar-container.three .search-highlight {
-  width: calc(100% / 3);
-}
-
-/* Each section */
-.search-section {
-  @apply px-5 py-3 relative text-sm text-gray-700 flex items-center h-full;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
   z-index: 1;
 }
 
-/* Fix for location section to behave the same */
+.search-bar-container.four .search-highlight {
+  width: calc((100% - 0px) / 4);
+}
+
+.search-section {
+  @apply px-5 py-3 relative text-sm text-gray-700 flex items-center h-full transition-colors;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 9999px;
+}
+
 .search-section:hover {
   background-color: #f1f1f1;
 }
 
-/* Active section */
 .search-section.active {
-  background-color: white;
-  z-index: 2; /* on top of .search-highlight */
+  z-index: 3;
+  color: black;
 }
 
-/* Input styling */
 .search-section input {
   @apply bg-transparent outline-none w-full text-sm;
   border: none;
-  z-index: 3;
+  z-index: 4;
 }
 
-/* Divider */
 .search-section:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -78,7 +69,6 @@
   @apply mx-2;
 }
 
-/* Search button */
 .search-btn {
   @apply bg-purple-600 text-white px-6 py-3 font-semibold rounded-r-full hover:bg-purple-700 transition;
   border: none;
