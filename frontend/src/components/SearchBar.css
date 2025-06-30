@@ -1,56 +1,57 @@
 .search-bar-container {
-  @apply flex items-center justify-center bg-white rounded-full shadow-md overflow-hidden;
-  border: 1px solid #ddd;
+  position: relative;
+  @apply flex items-center bg-white rounded-full shadow-md overflow-hidden border border-gray-300 mx-auto mt-4;
   width: fit-content;
-  margin: auto;
+  transition: box-shadow 0.3s ease;
 }
 
 .search-section {
-  @apply px-4 py-3 flex items-center;
+  @apply px-5 py-3 relative cursor-pointer text-sm text-gray-700;
   transition: background-color 0.3s ease;
-  border-right: 1px solid #ddd;
+  z-index: 1;
 }
 
-.search-section:last-child {
-  border-right: none;
+.search-section:hover {
+  background-color: #f1f1f1;
 }
 
 .search-section input {
-  @apply outline-none w-full text-sm text-gray-700;
+  @apply bg-transparent outline-none w-full text-sm;
   border: none;
-  background: transparent;
 }
 
-.date-input::-webkit-calendar-picker-indicator {
-  filter: invert(0.5);
+.search-section:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: #e2e8f0;
 }
 
-.search-section.active {
-  background-color: #f9f9f9;
+.search-highlight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 33.33%;
+  background-color: #f3f4f6;
+  border-radius: 9999px;
+  transition: transform 0.3s ease;
+  z-index: 0;
 }
 
-.guest-toggle {
-  @apply text-sm text-gray-700 cursor-pointer;
+/* Adjust widths if you have more/less sections */
+.search-bar-container.three .search-highlight {
+  width: calc(100% / 3);
 }
 
-.guest-dropdown {
-  @apply absolute mt-2 bg-white shadow-lg rounded-lg p-4 z-10;
-  width: 220px;
-}
-
-.guest-row {
-  @apply flex justify-between items-center mb-3;
-}
-
-.guest-controls button {
-  @apply bg-gray-200 px-2 rounded hover:bg-gray-300;
-}
-
-.guest-controls span {
-  @apply px-2;
+.search-bar-container.four .search-highlight {
+  width: calc(100% / 4);
 }
 
 .search-btn {
   @apply bg-purple-600 text-white px-6 py-3 font-semibold rounded-r-full hover:bg-purple-700 transition;
   border: none;
+  z-index: 1;
 }

@@ -6,7 +6,7 @@ function SearchBar({ onSearch }) {
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState({ adults: 1, children: 0 });
-  const [active, setActive] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [showGuests, setShowGuests] = useState(false);
 
   const checkoutRef = useRef();
@@ -16,12 +16,26 @@ function SearchBar({ onSearch }) {
     onSearch({ location, checkin, checkout, guests });
   };
 
+  const handleFocus = (index) => {
+    setActiveIndex(index);
+    if (index === 1) {
+      setTimeout(() => checkoutRef.current?.focus(), 500);
+    }
+    if (index === 3) {
+      setShowGuests((prev) => !prev);
+    } else {
+      setShowGuests(false);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="search-bar-container">
+    <form onSubmit={handleSubmit} className="search-bar-container four">
       <div
-        className={`search-section ${active === "location" ? "active" : ""}`}
-        onClick={() => setActive("location")}
-      >
+        className="search-highlight"
+        style={{ transform: `translateX(${activeIndex * 100}%)` }}
+      />
+
+      <div className="search-section" onClick={() => handleFocus(0)}>
         <input
           type="text"
           placeholder="Enter location or property"
@@ -30,43 +44,26 @@ function SearchBar({ onSearch }) {
         />
       </div>
 
-      <div
-        className={`search-section ${active === "checkin" ? "active" : ""}`}
-        onClick={() => {
-          setActive("checkin");
-          setTimeout(() => checkoutRef.current?.focus(), 500); // auto-move
-        }}
-      >
+      <div className="search-section" onClick={() => handleFocus(1)}>
         <input
           type="date"
           placeholder="Check-in"
-          className="date-input"
           value={checkin}
           onChange={(e) => setCheckin(e.target.value)}
         />
       </div>
 
-      <div
-        className={`search-section ${active === "checkout" ? "active" : ""}`}
-        onClick={() => setActive("checkout")}
-      >
+      <div className="search-section" onClick={() => handleFocus(2)}>
         <input
           type="date"
           placeholder="Check-out"
-          className="date-input"
           ref={checkoutRef}
           value={checkout}
           onChange={(e) => setCheckout(e.target.value)}
         />
       </div>
 
-      <div
-        className={`search-section ${active === "guests" ? "active" : ""}`}
-        onClick={() => {
-          setActive("guests");
-          setShowGuests(!showGuests);
-        }}
-      >
+      <div className="search-section" onClick={() => handleFocus(3)}>
         <div className="guest-toggle">
           {guests.adults + guests.children} guest(s)
         </div>
