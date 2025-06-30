@@ -19,7 +19,7 @@
   @apply flex justify-center items-center gap-4 mt-6 flex-wrap;
 }
 
-.btn-primary {
+.hero-buttons .btn-primary {
   @apply bg-purple-600 px-6 py-2 rounded text-white font-medium hover:bg-purple-700 transition;
 }
 
