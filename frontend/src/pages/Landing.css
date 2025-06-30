@@ -5,6 +5,9 @@
 
 .hero-overlay {
   @apply bg-black/60 p-6 text-white text-center rounded-xl max-w-3xl mx-auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-title {
@@ -17,6 +20,7 @@
 
 .hero-buttons {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   gap: 1rem; /* adds space between buttons */
   margin-top: 1.5rem;
@@ -24,15 +28,15 @@
 }
 
 .btn-primary {
-  @apply bg-green-600 px-6 py-2 rounded text-white font-medium hover:bg-green-700;
+  @apply bg-green-600 px-6 py-2 rounded text-white font-medium hover:bg-green-700 transition;
   text-align: center;
-  display: inline-block;
+  white-space: nowrap;
 }
 
 .btn-secondary {
   @apply border border-white text-white px-6 py-2 rounded hover:bg-white hover:text-black transition;
   text-align: center;
-  display: inline-block;
+  white-space: nowrap;
 }
 
 .about {
