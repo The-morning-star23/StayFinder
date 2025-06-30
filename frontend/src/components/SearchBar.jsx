@@ -6,7 +6,7 @@ function SearchBar({ onSearch }) {
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
   const [guests, setGuests] = useState({ adults: 1, children: 0 });
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(null);
   const [showGuests, setShowGuests] = useState(false);
 
   const checkoutRef = useRef();
@@ -19,23 +19,25 @@ function SearchBar({ onSearch }) {
   const handleFocus = (index) => {
     setActiveIndex(index);
     if (index === 1) {
-      setTimeout(() => checkoutRef.current?.focus(), 500);
+      setTimeout(() => checkoutRef.current?.focus(), 300);
     }
-    if (index === 3) {
-      setShowGuests((prev) => !prev);
-    } else {
-      setShowGuests(false);
-    }
+    setShowGuests(index === 3);
   };
 
   return (
     <form onSubmit={handleSubmit} className="search-bar-container four">
-      <div
-        className="search-highlight"
-        style={{ transform: `translateX(${activeIndex * 100}%)` }}
-      />
+      {activeIndex !== null && (
+        <div
+          className="search-highlight"
+          style={{ transform: `translateX(${activeIndex * 100}%)` }}
+        />
+      )}
 
-      <div className="search-section" onClick={() => handleFocus(0)}>
+      {/* Location */}
+      <div
+        className={`search-section ${activeIndex === 0 ? "active" : ""}`}
+        onClick={() => handleFocus(0)}
+      >
         <input
           type="text"
           placeholder="Enter location or property"
@@ -44,7 +46,11 @@ function SearchBar({ onSearch }) {
         />
       </div>
 
-      <div className="search-section" onClick={() => handleFocus(1)}>
+      {/* Check-in */}
+      <div
+        className={`search-section ${activeIndex === 1 ? "active" : ""}`}
+        onClick={() => handleFocus(1)}
+      >
         <input
           type="date"
           placeholder="Check-in"
@@ -53,7 +59,11 @@ function SearchBar({ onSearch }) {
         />
       </div>
 
-      <div className="search-section" onClick={() => handleFocus(2)}>
+      {/* Check-out */}
+      <div
+        className={`search-section ${activeIndex === 2 ? "active" : ""}`}
+        onClick={() => handleFocus(2)}
+      >
         <input
           type="date"
           placeholder="Check-out"
@@ -63,7 +73,11 @@ function SearchBar({ onSearch }) {
         />
       </div>
 
-      <div className="search-section" onClick={() => handleFocus(3)}>
+      {/* Guests */}
+      <div
+        className={`search-section ${activeIndex === 3 ? "active" : ""}`}
+        onClick={() => handleFocus(3)}
+      >
         <div className="guest-toggle">
           {guests.adults + guests.children} guest(s)
         </div>
@@ -123,6 +137,7 @@ function SearchBar({ onSearch }) {
         )}
       </div>
 
+      {/* Submit Button */}
       <button type="submit" className="search-btn">
         Search
       </button>

@@ -5,21 +5,35 @@
   transition: box-shadow 0.3s ease;
 }
 
+/* Section Styles */
 .search-section {
   @apply px-5 py-3 relative cursor-pointer text-sm text-gray-700;
   transition: background-color 0.3s ease;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
 }
 
+/* Hover and active behavior */
 .search-section:hover {
   background-color: #f1f1f1;
 }
 
+.search-section.active {
+  background-color: white;
+  z-index: 2;
+}
+
+/* Input inside section */
 .search-section input {
   @apply bg-transparent outline-none w-full text-sm;
   border: none;
+  z-index: 2;
 }
 
+/* Divider between sections */
 .search-section:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -28,28 +42,50 @@
   height: 50%;
   width: 1px;
   background-color: #e2e8f0;
+  z-index: 2;
 }
 
+/* Highlight slider background */
 .search-highlight {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 33.33%;
   background-color: #f3f4f6;
   border-radius: 9999px;
   transition: transform 0.3s ease;
   z-index: 0;
 }
 
-/* Adjust widths if you have more/less sections */
-.search-bar-container.three .search-highlight {
-  width: calc(100% / 3);
-}
-
+/* Section widths for 4 components */
 .search-bar-container.four .search-highlight {
   width: calc(100% / 4);
 }
 
+/* Section widths for 3 components (if needed) */
+.search-bar-container.three .search-highlight {
+  width: calc(100% / 3);
+}
+
+/* Guest dropdown styling */
+.guest-dropdown {
+  @apply absolute top-full mt-2 bg-white rounded-lg shadow p-4;
+  z-index: 10;
+}
+
+.guest-row {
+  @apply flex justify-between items-center mb-2;
+}
+
+.guest-controls button {
+  @apply px-2 py-1 bg-gray-200 rounded hover:bg-gray-300;
+  transition: all 0.2s ease;
+}
+
+.guest-controls span {
+  @apply mx-2;
+}
+
+/* Submit Button */
 .search-btn {
   @apply bg-purple-600 text-white px-6 py-3 font-semibold rounded-r-full hover:bg-purple-700 transition;
   border: none;
