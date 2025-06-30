@@ -1,0 +1,26 @@
+.search-bar-advanced {
+  @apply flex flex-wrap justify-center items-center gap-4 bg-white p-4 rounded-xl shadow-md;
+}
+
+.search-bar-advanced input[type="text"],
+.search-bar-advanced input[type="date"] {
+  @apply px-4 py-2 border border-gray-300 rounded-md w-48;
+}
+
+.guest-select {
+  @apply flex gap-4 items-center;
+}
+
+.guest-select label {
+  @apply text-sm text-gray-700;
+  display: flex;
+  flex-direction: column;
+}
+
+.guest-select input {
+  @apply px-2 py-1 border border-gray-300 rounded-md w-20;
+}
+
+.search-bar-advanced button {
+  @apply bg-purple-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-purple-700 transition;
+}

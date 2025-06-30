@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
+import SearchBar from "./SearchBar";
 
 function Header() {
   const [search, setSearch] = useState("");
@@ -42,6 +43,7 @@ function Header() {
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
       </nav>
+      <SearchBar onSearch={(form) => console.log("Search data:", form)} />
     </header>
   );
 }
