@@ -1,55 +1,56 @@
 .search-bar-container {
-  @apply flex items-center bg-white rounded-full shadow-md px-4 py-2 gap-2 transition duration-300 max-w-5xl mx-auto;
-  border: 1px solid #e5e7eb;
+  @apply flex items-center justify-center bg-white rounded-full shadow-md overflow-hidden;
+  border: 1px solid #ddd;
+  width: fit-content;
+  margin: auto;
 }
 
 .search-section {
-  @apply px-4 py-2 rounded-full cursor-pointer transition-colors duration-300 flex items-center;
-  background-color: #f9fafb;
+  @apply px-4 py-3 flex items-center;
+  transition: background-color 0.3s ease;
+  border-right: 1px solid #ddd;
 }
 
-.search-section input,
-.search-section .guest-toggle {
-  @apply bg-transparent border-none outline-none text-sm text-gray-800 w-full;
+.search-section:last-child {
+  border-right: none;
 }
 
-.search-section:hover {
-  background-color: #f3f4f6;
-}
-
-.search-section.active {
-  background-color: white;
-  border: 1px solid #c4b5fd;
-  box-shadow: 0 0 0 2px #c4b5fd;
-  z-index: 10;
+.search-section input {
+  @apply outline-none w-full text-sm text-gray-700;
+  border: none;
+  background: transparent;
 }
 
 .date-input::-webkit-calendar-picker-indicator {
-  filter: brightness(0.5);
+  filter: invert(0.5);
 }
 
-.search-btn {
-  @apply bg-purple-600 text-white px-5 py-2 rounded-full hover:bg-purple-700 transition;
-  white-space: nowrap;
+.search-section.active {
+  background-color: #f9f9f9;
 }
 
-/* Guest Dropdown */
+.guest-toggle {
+  @apply text-sm text-gray-700 cursor-pointer;
+}
+
 .guest-dropdown {
-  @apply absolute top-[110%] left-0 bg-white border border-gray-200 rounded-lg shadow-lg p-4 w-60 z-20;
+  @apply absolute mt-2 bg-white shadow-lg rounded-lg p-4 z-10;
+  width: 220px;
 }
 
 .guest-row {
   @apply flex justify-between items-center mb-3;
 }
 
-.guest-controls {
-  @apply flex items-center gap-2;
-}
-
 .guest-controls button {
-  @apply bg-gray-200 w-6 h-6 rounded-full text-sm font-bold hover:bg-gray-300 transition;
+  @apply bg-gray-200 px-2 rounded hover:bg-gray-300;
 }
 
 .guest-controls span {
-  @apply text-sm font-medium;
+  @apply px-2;
+}
+
+.search-btn {
+  @apply bg-purple-600 text-white px-6 py-3 font-semibold rounded-r-full hover:bg-purple-700 transition;
+  border: none;
 }
